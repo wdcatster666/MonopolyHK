@@ -6,6 +6,8 @@ let idiomaAtual = "pt";
 let jogadores = [];
 let jogadorAtual = 0;
 let tirouDupla = 0;
+let totalP1 = 0;
+let totalP2 = 0;
 
 // Declaração dos textos nos dois idiomas
 
@@ -32,7 +34,10 @@ const textosG = {
         passar_vez: "Passar Vez",
         titulo_propriedade_avenda: "Propriedade à Venda!",
         btn_passar_compra: "Passar",
-        btn_comprar_propriedade: "Comprar"
+        btn_comprar_propriedade: "Comprar",
+        btn_batalhar: "Batalhar",
+        btn_pagar_aluguel: "Pagar",
+        lancar_dados: "Rolar os Dados"
     },
 
     // Textos gerais em Inglês
@@ -56,7 +61,10 @@ const textosG = {
         passar_vez: "End Turn",
         titulo_propriedade_avenda: "Property for Sale!",
         btn_passar_compra: "Pass",
-        btn_comprar_propriedade: "Buy"
+        btn_comprar_propriedade: "Buy",
+        btn_batalhar: "Battle",
+        btn_pagar_aluguel: "Pay",
+        lancar_dados: "Roll the Dice"
     }
 }
 
@@ -893,6 +901,9 @@ function atualizarInterface() {
     document.getElementById("titulo_propriedade_avenda").textContent = tg.titulo_propriedade_avenda;
     document.getElementById("btn_passar_compra").textContent = tg.btn_passar_compra;
     document.getElementById("btn_comprar_propriedade").textContent = tg.btn_comprar_propriedade;
+    document.getElementById("btn_batalhar").textContent = tg.btn_batalhar;
+    document.getElementById("btn_pagar_aluguel").textContent = tg.btn_pagar_aluguel;
+    document.getElementById("lancar_dados").textContent = tg.lancar_dados;
 
     // Nomes das propriedades
 
@@ -924,6 +935,7 @@ function mudarIdioma() {
         idiomaAtual = "pt";
     }
     atualizarInterface();
+    atualizarPropriedades();
     atualizarModalCompra(jogadores[jogadorAtual]);
     atualizarVez();
 }
@@ -961,25 +973,25 @@ function iniciarJogo() {
     }
     if (document.getElementById("p1").style.display == "block") {
         document.getElementById("status_p1").style.display = "flex";
-        jogadores.push({ id: 0, nome: `${listaJogadores[0]}`, posicao: 0, geo: 15000, selado: false, cor: "#0c2367", elementoPeao: null, icone: "imagens/knight_icon.png" });
+        jogadores.push({ id: 0, nome: `${listaJogadores[0]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#0c2367", elementoPeao: null, icone: "imagens/knight_icon.png" });
     } else {
         document.getElementById("status_p1").style.display = "none";   
     }
     if (document.getElementById("p2").style.display == "block") {
         document.getElementById("status_p2").style.display = "flex";
-        jogadores.push({ id: 1, nome: `${listaJogadores[1]}`, posicao: 0, geo: 15000, selado: false, cor: "#de2533", elementoPeao: null, icone: "imagens/hornet_icon.png" });
+        jogadores.push({ id: 1, nome: `${listaJogadores[1]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#de2533", elementoPeao: null, icone: "imagens/hornet_icon.png" });
     } else {
         document.getElementById("status_p2").style.display = "none";   
     }
     if (document.getElementById("p3").style.display == "block") {
         document.getElementById("status_p3").style.display = "flex";
-        jogadores.push({ id: 2, nome: `${listaJogadores[2]}`, posicao: 0, geo: 15000, selado: false, cor: "#257d68", elementoPeao: null, icone: "imagens/quirrel_icon.png" });
+        jogadores.push({ id: 2, nome: `${listaJogadores[2]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#257d68", elementoPeao: null, icone: "imagens/quirrel_icon.png" });
     } else {
         document.getElementById("status_p3").style.display = "none";   
     }
     if (document.getElementById("p4").style.display == "block") {
         document.getElementById("status_p4").style.display = "flex";
-        jogadores.push({ id: 3, nome: `${listaJogadores[3]}`, posicao: 0, geo: 15000, selado: false, cor: "#17171b", elementoPeao: null, icone: "imagens/zote_icon.png" });
+        jogadores.push({ id: 3, nome: `${listaJogadores[3]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#17171b", elementoPeao: null, icone: "imagens/zote_icon.png" });
     } else {
         document.getElementById("status_p4").style.display = "none";   
     }
@@ -990,6 +1002,7 @@ function iniciarJogo() {
     menu.style.display = "none";
     blurBG.style.display = "none";
     inicializarPeoes();
+    atualizarPropriedades();
     atualizarVez();
 }
 
@@ -1045,6 +1058,7 @@ function movimentoPeao(idJogador, passos) {
             moverPeao(jogador.elementoPeao, jogador.posicao);
             if (jogador.posicao === 0) {
                 jogador.geo += 2000;
+                atualizarGeo();
             }
             passosRestantes--;
         } else {
@@ -1056,7 +1070,7 @@ function movimentoPeao(idJogador, passos) {
                 passarVez.className = "btn-passar-vez-ativo";
             }
         }
-    }, 450);
+    }, 100);
 }
 
 // Função para rolar os dados
@@ -1081,6 +1095,7 @@ function rolarDados() {
                 tirouDupla = 0;
                 jogadorAtual = (jogadorAtual + 1) % jogadores.length;
                 atualizarVez();
+                rolarDados.style.cursor = "pointer";
                 return;
             }
         } else {
@@ -1123,22 +1138,55 @@ function fecharMensagem() {
 
 // Função para atualizar a quantidade de Geo
 
-function atualizarGeo(jogador) {
-    document.getElementById("qnt_geo_" + jogador.id).textContent = jogador.geo;
+function atualizarGeo() {
+    const quantidade = document.getElementById("qtd_jogadores").value;
+    for (let i = 0; i < quantidade; i++) {
+        document.getElementById("qnt_geo_" + i).textContent = jogadores[i].geo;
+    }
+}
+
+// Função para atualizar a quantidade de propriedades
+
+function atualizarPropriedades() {
+    const quantidade = document.getElementById("qtd_jogadores").value;
+    let qntProp = 0;
+    for (let i = 0; i < quantidade; i++) {
+        qntProp = 0;
+        for (let p = 0; p <= 39; p++) {
+            if (propriedades[p].dono === i) qntProp++;
+        }
+        if (idiomaAtual === "pt") {
+            document.getElementById("qnt_propriedades_" + i).textContent = `${qntProp} propriedades`;
+        } else {
+            document.getElementById("qnt_propriedades_" + i).textContent = `${qntProp} properties`;    
+        }
+    }       
 }
 
 // Função para executar a ação da casa
 
 function executarAcao(jogador) {
-    const casaAtual = propriedades[`${jogador.posicao}`];
+    const casaAtual = propriedades[jogador.posicao];
+
+    // Casas do tipo "Propriedade"
+
     if (casaAtual.tipo === "propriedade") {
         if (casaAtual.dono === null) {
             atualizarModalCompra(jogador);
             document.getElementById("faixa_cor_modal").className = `propriedade-${casaAtual.grupo}`;
             document.getElementById("modal_compra_propriedades").style.display = "block";
             blurBG.style.display = "block";
-        } else if (casaAtual.dono != jogador) {
-
+        } else if (casaAtual.dono != jogador.id) {
+            if (idiomaAtual === "pt") {
+                document.getElementById("titulo_pagar_aluguel").innerHTML = `Propriedade de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
+                document.getElementById("nome_local_pagar").textContent = `Aluguel de ${textosP["pt"]["casa_" + casaAtual.id]}: `;
+            } else {
+                document.getElementById("titulo_pagar_aluguel").innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}'s</span> Property`;
+                document.getElementById("nome_local_pagar").textContent = `${textosP["en"]["casa_" + casaAtual.id]}'s Rent: `;
+            }
+            document.getElementById("qnt_pagar_aluguel").textContent = casaAtual.alugueis[casaAtual.casasConstruidas];
+            document.getElementById("modal_pagar_aluguel").style.display = "block";
+            blurBG.style.display = "block";
         }
     }
 }
@@ -1153,11 +1201,12 @@ function passarCompra() {
 // Função para comprar a propriedade
 
 function comprarPropriedade(jogador) {
-    const casaAtual = propriedades[`${jogador.posicao}`];
+    const casaAtual = propriedades[jogador.posicao];
     if (jogador.geo >= casaAtual.preco) {
         casaAtual.dono = jogadorAtual;
         jogador.geo -= casaAtual.preco;
-        atualizarGeo(jogador);
+        atualizarGeo();
+        atualizarPropriedades();
         document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
         document.getElementById("modal_compra_propriedades").style.display = "none";
         blurBG.style.display = "none";
@@ -1170,10 +1219,134 @@ function comprarPropriedade(jogador) {
     }
 }
 
+// Função para batalhar pelo aluguel
+
+function batalhar() {
+    const jogador = jogadores[jogadorAtual];
+    if (idiomaAtual === "pt") {
+        document.getElementById("jogador_lanca_dados").innerHTML = `Vez de <span style="color: ${jogador.cor};">${jogador.nome}</span> lançar os dados`;
+    } else {
+        document.getElementById("jogador_lanca_dados").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}'s</span> turn to roll the dice`;    
+    }
+    document.getElementById("modal_batalha_aluguel").style.display = "block";
+    document.getElementById("modal_pagar_aluguel").style.display = "none";
+}
+
+// Função para lançar os dados na batalha pelo aluguel
+
+function lancarDadosBatalha() {
+    const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
+    const txtVencedor = document.getElementById("titulo_vencedor");
+    const txtPerdedor = document.getElementById("anuncio_perdedor");
+    const txtP2 = document.getElementById("jogador_lanca_dados");
+    const rolarDados = document.getElementById("lancar_dados");
+    if (totalP1 === 0) {
+        if (rolarDados.style.cursor === "not-allowed") return;
+        rolarDados.style.cursor = "not-allowed";
+        const d1 = document.getElementById("dado_1ba");
+        const d2 = document.getElementById("dado_2ba")
+        d1.classList.add("rolando");
+        d2.classList.add("rolando");
+        setTimeout(() => {
+            d1.classList.remove("rolando");
+            d2.classList.remove("rolando");
+            const dado1 = Math.floor(Math.random() * 6) + 1;
+            const dado2 = Math.floor(Math.random() * 6) + 1;
+            totalP1 = dado1 + dado2;
+            d1.textContent = dado1;
+            d2.textContent = dado2;
+            if (idiomaAtual === "pt") {
+                document.getElementById("valor_dados_p1").textContent = `Valor de ${jogador.nome}: ${totalP1}`;
+            } else {
+                document.getElementById("valor_dados_p1").textContent = `${jogador.nome}'s Value: ${totalP1}`; 
+            }
+            document.getElementById("valor_dados_p1").style.display = "block";
+            if (idiomaAtual === "pt") {
+                txtP2.innerHTML = `Vez de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> lançar os dados`;
+            } else {
+                txtP2.innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}'s</span> turn to roll the dice`; 
+            }
+            rolarDados.style.cursor = "pointer";
+        }, 500);
+    } else {
+        if (rolarDados.style.cursor === "not-allowed") return;
+        rolarDados.style.cursor = "not-allowed";
+        const d1 = document.getElementById("dado_1ba");
+        const d2 = document.getElementById("dado_2ba")
+        d1.classList.add("rolando");
+        d2.classList.add("rolando");
+        setTimeout(() => {
+            d1.classList.remove("rolando");
+            d2.classList.remove("rolando");
+            const dado1 = Math.floor(Math.random() * 6) + 1;
+            const dado2 = Math.floor(Math.random() * 6) + 1;
+            totalP2 = dado1 + dado2;
+            d1.textContent = dado1;
+            d2.textContent = dado2;
+            if (totalP1 > totalP2) {
+                valorAPagar = casaAtual.alugueis[casaAtual.casasConstruidas] * 0.5;
+                if (idiomaAtual === "pt") {
+                    txtVencedor.innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> Venceu!`;
+                    txtPerdedor.textContent = `${jogadores[casaAtual.dono].nome} deve pagar ${valorAPagar} Geo`;
+                } else {
+                    txtVencedor.innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> Won!`;
+                    txtPerdedor.textContent = `${jogadores[casaAtual.dono].nome} must pay ${valorAPagar} Geo`;
+                }
+                jogadores[casaAtual.dono].geo -= valorAPagar;
+                jogador.geo += valorAPagar;
+            } else {
+                valorAPagar = casaAtual.alugueis[casaAtual.casasConstruidas] * 2;
+                if (idiomaAtual === "pt") {
+                    txtVencedor.innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> Venceu!`;
+                    txtPerdedor.textContent = `${jogador.nome} deve pagar ${valorAPagar} Geo`;
+                } else {
+                    txtVencedor.innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> Won!`;
+                    txtPerdedor.textContent = `${jogador.nome} must pay ${valorAPagar} Geo`;
+                }
+                jogador.geo -= valorAPagar;
+                jogadores[casaAtual.dono].geo += valorAPagar;
+            }
+            setTimeout(() => {
+                document.getElementById("modal_batalha_aluguel_result").style.display = "block";
+                xBlurBG.style.display = "block";
+            }, 1500)
+        }, 500);  
+    }
+}
+
+// Função para fechar o anúncio do vencedor da batalha
+
+function fecharAnuncio() {
+    totalP1 = 0;
+    totalP2 = 0;
+    atualizarGeo();
+    document.getElementById("modal_batalha_aluguel_result").style.display = "none";
+    xBlurBG.style.display = "none";
+    document.getElementById("modal_batalha_aluguel").style.display = "none";
+    blurBG.style.display = "none";
+    document.getElementById("valor_dados_p1").style.display = "none";
+    document.getElementById("lancar_dados").style.cursor = "pointer";
+}
+
+// Função para pagar o aluguel
+
+function pagarAluguel() {
+    const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
+    const dono = casaAtual.dono;
+    const valorAluguel = casaAtual.alugueis[casaAtual.casasConstruidas];
+    jogador.geo -= valorAluguel;
+    jogadores[dono].geo += valorAluguel;
+    atualizarGeo();
+    document.getElementById("modal_pagar_aluguel").style.display = "none";
+    blurBG.style.display = "none";
+}
+
 // Função para atualizar os textos do modal de compras
 
 function atualizarModalCompra(jogador) {
-    const casaAtual = propriedades[`${jogador.posicao}`];
+    const casaAtual = propriedades[jogador.posicao];
     if (idiomaAtual === "pt") {
         document.getElementById("pergunta_comprar").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
     } else {

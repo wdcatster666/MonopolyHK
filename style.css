@@ -290,7 +290,7 @@ hr {
 
 .casa {
     position: relative;
-    border: 1px solid #262626;
+    border: 1px solid #797065;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -514,6 +514,7 @@ hr {
 .container-dados {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 16px;
 }
 
@@ -587,7 +588,7 @@ hr {
     justify-content: center;
     align-content: center;
     align-items: center;
-    gap: 1px 4px;
+    gap: 0 4px;
     z-index: 10;
 }
 
@@ -749,7 +750,7 @@ hr {
     border-radius: 32px;
     background-color: #131313;
     box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
-    z-index: 9999; 
+    z-index: 9999;
 }
 
 #mensagem {
@@ -811,4 +812,139 @@ hr {
     width: 75%;
     margin: 0 auto;
     gap: 24px;
+}
+
+/* MODAL DE PAGAMENTO DE ALUGUÉIS */
+
+#modal_pagar_aluguel {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;
+}
+
+#titulo_pagar_aluguel {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15%;
+}
+
+.qnt-geo-pagar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10%;
+    gap: 4px;
+}
+
+#nome_local_pagar {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.geo-symbol {
+    height: 16px;
+    width: auto;
+}
+
+#qnt_pagar_aluguel {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.container-botoes-aluguel {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    margin: 0 auto;
+    gap: 24px;    
+}
+
+/* MODAL DE BATALHA PELOS ALUGUÉIS */
+
+#modal_batalha_aluguel {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;
+}
+
+#jogador_lanca_dados {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 48px;
+}
+
+#lancar_dados {
+    margin-top: 32px;
+}
+
+#valor_dados_p1 {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* MODAL DE RESULTADOS DA BATALHA */
+
+#modal_batalha_aluguel_result {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 30%;
+    width: 30%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9999;
+}
+
+#titulo_vencedor {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 24px;  
+}
+
+#anuncio_perdedor {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
 }

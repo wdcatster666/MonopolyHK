@@ -278,7 +278,7 @@
                     <div class="info-jogador">
                         <p id="nome_jogador_0" class="nome-jogador"></p>
                         <div class="linha-detalhes">
-                            <p id="qnt_propriedades_0" class="qnt-propriedades">0 propriedades</p>
+                            <p id="qnt_propriedades_0" class="qnt-propriedades"></p>
                             <p id="preso_0" class="txt-selado"></p>
                         </div>
                     </div>
@@ -295,7 +295,7 @@
                     <div class="info-jogador">
                         <p id="nome_jogador_1" class="nome-jogador"></p>
                         <div class="linha-detalhes">
-                            <p id="qnt_propriedades_1" class="qnt-propriedades">0 propriedades</p>
+                            <p id="qnt_propriedades_1" class="qnt-propriedades"></p>
                             <p id="preso_1" class="txt-selado"></p>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
                     <div class="info-jogador">
                         <p id="nome_jogador_2" class="nome-jogador"></p>
                         <div class="linha-detalhes">
-                            <p id="qnt_propriedades_2" class="qnt-propriedades">0 propriedades</p>
+                            <p id="qnt_propriedades_2" class="qnt-propriedades"></p>
                             <p id="preso_2" class="txt-selado"></p>
                         </div>
                     </div>
@@ -329,7 +329,7 @@
                     <div class="info-jogador">
                         <p id="nome_jogador_3" class="nome-jogador"></p>
                         <div class="linha-detalhes">
-                            <p id="qnt_propriedades_3" class="qnt-propriedades">0 propriedades</p>
+                            <p id="qnt_propriedades_3" class="qnt-propriedades"></p>
                             <p id="preso_3" class="txt-selado"></p>
                         </div>
                     </div>
@@ -365,6 +365,41 @@
                     <button id="btn_passar_compra" class="botao-secundario" onclick="passarCompra()"></button>
                     <button id="btn_comprar_propriedade" class="botao-primario" onclick="comprarPropriedade(jogadores[jogadorAtual])"></button>
                 </div>
+            </div>
+
+            <!--Modal de pagamento de aluguel-->
+
+            <div id="modal_pagar_aluguel" style="display: none;">
+                <h1 id="titulo_pagar_aluguel"></h1>
+                <div class="qnt-geo-pagar">
+                    <p id="nome_local_pagar"></p>
+                    <img src="imagens/geo.png" class="geo-symbol">
+                    <p id="qnt_pagar_aluguel"></p>
+                </div>
+                <div class="container-botoes-aluguel">
+                    <button id="btn_batalhar" class="botao-secundario" onclick="batalhar()"></button>
+                    <button id="btn_pagar_aluguel" class="botao-primario" onclick="pagarAluguel()"></button>
+                </div>
+            </div>
+
+            <!--Modal de batalha pelo aluguel-->
+
+            <div id="modal_batalha_aluguel" style="display: none;">
+                <h1 id="jogador_lanca_dados"></h1>
+                <div class="container-dados">
+                    <div id="dado_1ba" class="dado">1</div>
+                    <div id="dado_2ba" class="dado">1</div>
+                </div>
+                <button id="lancar_dados" class="botao-primario" onclick="lancarDadosBatalha()"></button>
+                <p id="valor_dados_p1" style="display: none;"></p>
+            </div>
+
+            <!--Modal de resultados da batalha-->
+
+            <div id="modal_batalha_aluguel_result" style="display: none;">
+                <h1 id="titulo_vencedor"></h1>
+                <p id="anuncio_perdedor"></p>
+                <button id="btn_batalha_ok" class="botao-primario" onclick="fecharAnuncio()">Ok</button>
             </div>
 
         </div>
