@@ -1,0 +1,373 @@
+<html lang="pt-BR">
+    <head>
+        <title>Monopoly - Hollow Knight</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+
+        <div id="blur"></div>
+        <div id="blurXtra" style="display: none;"></div>
+
+        <!--Banner Topo-->
+
+        <div class="banner-topo">
+            <img class="knight-banner" src="imagens/icone_banner_topo.png">
+            <p class="titulo-banner">Monopoly: Hollow Knight Edition</p>
+
+            <!--Seletor de Idioma-->
+
+            <div class="seletor-idioma">
+                <button onclick="mudarIdioma()" id="idioma"></button>
+            </div>
+
+        </div>
+
+        <!--Configurações do Jogo-->
+
+        <!--Selecionar a quantidade de jogadores-->
+
+        <div id="configuracoes">
+            <div id="seletor_jogadores">
+                <h2 id="msg_configurar_jogadores"></h2>
+                <select id="qtd_jogadores" onchange="atualizarCampos()">
+                    <option value="2" id="dois_jogadores"></option>
+                    <option value="3" id="tres_jogadores"></option>
+                    <option value="4" id="quatro_jogadores"></option>
+                </select>
+                <hr>
+
+                <!--Selecionar o nome dos jogadores-->
+                <div class="container-nome-jogadores">
+                    <div id="nome_jogadores">
+                        <div id="p1" class="jogador-campo">
+                            <label id="jogador_1"></label>
+                            <input type="text" id="nome_p1" value="Knight" maxlength="16">
+                        </div>
+                        <div id="p2" class="jogador-campo">
+                            <label id="jogador_2"></label>
+                            <input type="text" id="nome_p2" value="Hornet" maxlength="16">
+                        </div>
+                        <div id="p3" class="jogador-campo">
+                            <label id="jogador_3"></label>
+                            <input type="text" id="nome_p3" value="Quirrel" maxlength="16">
+                        </div>
+                        <div id="p4" class="jogador-campo">
+                            <label id="jogador_4"></label>
+                            <input type="text" id="nome_p4" value="Zote" maxlength="16">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <!--Escolher usar dados reais ou digitais-->
+
+            <div class="usar-dados">
+                <h2 id="simular_dados"></h2>
+                <div class="botoes-usar-dados">
+                    <button class="botao-ativo" onclick="usarDados('sim')" id="btn_usar_dados"></button>
+                    <button class="botao-inativo" onclick="usarDados('nao')" id="btn_nao_usar_dados"></button>
+                </div>
+            </div>
+
+            <!--Botão para iniciar o jogo-->
+            <div class="botao-iniciar">
+                <button id="btn_iniciar_jogo" onClick="iniciarJogo()"></button>
+            </div>
+        </div>
+
+        <!--Conteúdo Principal-->
+
+        <div class="conteudo-principal">
+
+            <!--Tabuleiro e suas Propriedades-->
+
+            <div id="tabuleiro">
+                <div class="casa casa-inicio" id="casa_0"
+                     style="background-image: url('imagens/kings_pass.png'); background-size: cover;"></div>
+                <div class="casa propriedade-cinza" id="casa_1">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">800 Geo</span>
+                </div>
+                <div class="casa propriedade-cinza" id="casa_2">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">700 Geo</span>
+                </div>
+                <div class="casa companhia-lago-azul" id="casa_3"
+                     style="background-image: url('imagens/lazo_azul_bg.png'); background-size: cover;"></div>
+                <div class="casa propriedade-cinza" id="casa_4">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">750 Geo</span>
+                </div>
+                <div class="casa stag-station" id="casa_5">
+                    <img class="stag" src="imagens/stag_marker.png">
+                    <span class="casa_stag"></span>
+                </div>
+                <div class="casa propriedade-verde" id="casa_6">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1200 Geo</span>
+                </div>
+                <div class="casa sorte-reves" id="casa_7">
+                    <img class="nail_bg" src="imagens/nail_bg.png">
+                    <span class="casa_exploracao"></span>
+                </div>
+                <div class="casa propriedade-verde" id="casa_8">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1000 Geo</span>
+                </div>
+                <div class="casa propriedade-verde" id="casa_9">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1400 Geo</span>
+                </div>
+                <div class="casa casa-templo" id="casa_10"
+                     style="background-image: url('imagens/templo.png'); background-size: cover;"></div>
+                <div class="casa propriedade-azul" id="casa_11">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2600 Geo</span>
+                </div>
+                <div class="casa companhia-casa-prazer" id="casa_12"
+                     style="background-image: url('imagens/casa_prazeres_bg.png'); background-size: cover;"></div>
+                <div class="casa propriedade-azul" id="casa_13">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2200 Geo</span>
+                </div>
+                <div class="casa propriedade-azul" id="casa_14">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2300 Geo</span>
+                </div>
+                <div class="casa stag-station" id="casa_15">
+                    <img class="stag" src="imagens/stag_marker.png">
+                    <span class="casa_stag"></span>
+                </div>
+                <div class="casa propriedade-rosa" id="casa_16">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1500 Geo</span>
+                </div>
+                <div class="casa propriedade-rosa" id="casa_17">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1300 Geo</span>
+                </div>
+                <div class="casa sorte-reves" id="casa_18">
+                    <img class="nail_bg" src="imagens/nail_bg.png">
+                    <span class="casa_exploracao"></span>
+                </div>
+                <div class="casa propriedade-rosa" id="casa_19">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">1800 Geo</span>
+                </div>
+                <div class="casa casa-fontes" id="casa_20"
+                     style="background-image: url('imagens/fontes_termais.png'); background-size: cover;"></div>
+                <div class="casa propriedade-preto" id="casa_21">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2000 Geo</span>
+                </div>
+                <div class="casa sorte-reves" id="casa_22">
+                    <img class="nail_bg" src="imagens/nail_bg.png">
+                    <span class="casa_exploracao"></span>
+                </div>
+                <div class="casa propriedade-preto" id="casa_23">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2100 Geo</span>
+                </div>
+                <div class="casa propriedade-preto" id="casa_24">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2100 Geo</span>
+                </div>
+                <div class="casa stag-station" id="casa_25">
+                    <img class="stag" src="imagens/stag_marker.png">
+                    <span class="casa_stag"></span>
+                </div>
+                <div class="casa propriedade-branco" id="casa_26">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">4600 Geo</span>
+                </div>
+                <div class="casa propriedade-branco" id="casa_27">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">5000 Geo</span>
+                </div>
+                <div class="casa companhia-lago-unn" id="casa_28"
+                     style="background-image: url('imagens/lago_unn_bg.png'); background-size: cover;"></div>
+                <div class="casa propriedade-branco" id="casa_29">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">4200 Geo</span>
+                </div>
+                <div class="casa casa-selado" id="casa_30"
+                     style="background-image: url('imagens/sealed_vessel.png'); background-size: cover;"></div>
+                <div class="casa propriedade-roxo" id="casa_31">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">3600 Geo</span>
+                </div>
+                <div class="casa propriedade-roxo" id="casa_32">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">3200 Geo</span>
+                </div>
+                <div class="casa sorte-reves" id="casa_33">
+                    <img class="nail_bg" src="imagens/nail_bg.png">
+                    <span class="casa_exploracao"></span>
+                </div>
+                <div class="casa propriedade-roxo" id="casa_34">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">3400 Geo</span>
+                </div>
+                <div class="casa stag-station" id="casa_35">
+                    <img class="stag" src="imagens/stag_marker.png">
+                    <span class="casa_stag"></span>
+                </div>
+                <div class="casa propriedade-amarelo" id="casa_36">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2800 Geo</span>
+                </div>
+                <div class="casa companhia-coliseu" id="casa_37"
+                     style="background-image: url('imagens/coliseu_bg.png'); background-size: cover;"></div>
+                <div class="casa propriedade-amarelo" id="casa_38">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2600 Geo</span>
+                </div>
+                <div class="casa propriedade-amarelo" id="casa_39">
+                    <div class="faixa-cor"></div>
+                    <span class="nome_propriedade"></span>
+                    <span class="preco">2800 Geo</span>
+                </div>
+                <div id="centro_tabuleiro">
+                    <h1 id="vez_de_jogador"></h1>
+                    <div class="container-dados">
+                        <div id="dado_1" class="dado">1</div>
+                        <div id="dado_2" class="dado">1</div>
+                    </div>
+                    <div class="botoes-centro-tabuleiro">
+                        <button id="rolar_dados" class="botao-primario" onclick="rolarDados()"></button>
+                        <button id="passar_vez" class="btn-passar-vez-inativo" onclick="passarVez()"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Jogadores, quantidade de geo e proriedades e status-->
+
+            <div class="container-lista-jogadores">
+                <h1 id="titulo_jogadores"></h1>
+
+                <!--Jogador 1-->
+
+                <div id="status_p1" class="container-jogador knight">
+                    <img src="imagens/knight_icon.png" class="player-icon-menu">
+                    <div class="info-jogador">
+                        <p id="nome_jogador_0" class="nome-jogador"></p>
+                        <div class="linha-detalhes">
+                            <p id="qnt_propriedades_0" class="qnt-propriedades">0 propriedades</p>
+                            <p id="preso_0" class="txt-selado"></p>
+                        </div>
+                    </div>
+                    <div class="container-geo">
+                        <img src="imagens/geo.png" class="geo-icon">
+                        <p id="qnt_geo_0" class="qnt-geo"></p>
+                    </div>
+                </div>
+
+                <!--Jogador 2-->
+
+                <div id="status_p2" class="container-jogador hornet">
+                    <img src="imagens/hornet_icon.png" class="player-icon-menu">
+                    <div class="info-jogador">
+                        <p id="nome_jogador_1" class="nome-jogador"></p>
+                        <div class="linha-detalhes">
+                            <p id="qnt_propriedades_1" class="qnt-propriedades">0 propriedades</p>
+                            <p id="preso_1" class="txt-selado"></p>
+                        </div>
+                    </div>
+                    <div class="container-geo">
+                        <img src="imagens/geo.png" class="geo-icon">
+                        <p id="qnt_geo_1" class="qnt-geo"></p>
+                    </div>
+                </div>
+
+                <!--Jogador 3-->
+
+                <div id="status_p3" class="container-jogador quirrel">
+                    <img src="imagens/quirrel_icon.png" class="player-icon-menu">
+                    <div class="info-jogador">
+                        <p id="nome_jogador_2" class="nome-jogador"></p>
+                        <div class="linha-detalhes">
+                            <p id="qnt_propriedades_2" class="qnt-propriedades">0 propriedades</p>
+                            <p id="preso_2" class="txt-selado"></p>
+                        </div>
+                    </div>
+                    <div class="container-geo">
+                        <img src="imagens/geo.png" class="geo-icon">
+                        <p id="qnt_geo_2" class="qnt-geo"></p>
+                    </div>
+                </div>
+
+                <!--Jogador 4-->
+
+                <div id="status_p4" class="container-jogador zote">
+                    <img src="imagens/zote_icon.png" class="player-icon-menu">
+                    <div class="info-jogador">
+                        <p id="nome_jogador_3" class="nome-jogador"></p>
+                        <div class="linha-detalhes">
+                            <p id="qnt_propriedades_3" class="qnt-propriedades">0 propriedades</p>
+                            <p id="preso_3" class="txt-selado"></p>
+                        </div>
+                    </div>
+                    <div class="container-geo">
+                        <img src="imagens/geo.png" class="geo-icon">
+                        <p id="qnt_geo_3" class="qnt-geo"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modais-->
+
+            <!--Modal mensagens-->
+
+            <div id="modal_mensagens" style="display: none;">
+                <p id="mensagem"></p>
+                <div class="container-botao-mensagem">
+                    <button id="botao_mensagem_ok" class="botao-primario" onclick="fecharMensagem()">Ok</button>
+                </div>
+            </div>
+
+            <!--Modal de compra de propriedades-->
+
+            <div id="modal_compra_propriedades" style="display: none;">
+                <h1 id="titulo_propriedade_avenda"></h1>
+                <div class="container-faixa-cor">
+                    <div id="faixa_cor_modal">
+                        <div class="faixa-cor"></div>
+                    </div>
+                </div>
+                <p id="pergunta_comprar"></p>
+                <div class="container-botoes-compra">
+                    <button id="btn_passar_compra" class="botao-secundario" onclick="passarCompra()"></button>
+                    <button id="btn_comprar_propriedade" class="botao-primario" onclick="comprarPropriedade(jogadores[jogadorAtual])"></button>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

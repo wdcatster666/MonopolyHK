@@ -1,0 +1,814 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    background-color: rgb(22, 24, 39);
+    color: #e2e8f0;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+}
+
+hr {
+    width: 90%;
+    margin: 20px;
+}
+
+#blur {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9997;
+}
+
+#blurXtra {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* ESTILO DOS BOTÕES GENÉRICOS*/
+
+.botao-primario {
+    height: 32px;
+    width: 50%;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff9f22;
+    border: solid 2px #000000;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.botao-secundario {
+    height: 32px;
+    width: 50%;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    border: solid 2px #0a0f1f;
+    color: #0a0f1f;
+    background-color: #373d55;
+    border-radius: 6px;
+    cursor: pointer;    
+}
+
+/* BANNER DO TOPO */
+
+.banner-topo {
+    display: flex;
+    flex-direction: row;
+    top: 0;
+    height: 6%;
+    width: 100%;
+    background-color: rgb(26, 29, 58);
+    align-items: center;
+}
+
+.knight-banner {
+    height: 95%;
+    width: auto;
+    margin-left: 1%;
+}
+
+.titulo-banner {
+    margin-left: 10px;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #e2e8f0;
+}
+
+.seletor-idioma {
+    position: fixed;
+    right: 6px;
+    z-index: 9999;
+}
+
+#idioma {
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    height: 32px;
+    width: 128px;
+    border: solid 2px #060606;
+    border-radius: 20px;
+    background-color: #ff9f22;
+    cursor: pointer;
+}
+
+/* CONFIGURAÇÕES INICIAIS */
+
+#configuracoes {
+    position: fixed;
+    padding: 24px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    align-self: center;
+    justify-self: center;
+    background-color: #131313;
+    border-radius: 16px;
+    height: 70%;
+    width: 50%;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9999;
+}
+
+#seletor_jogadores {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#seletor_jogadores select, option {
+    background-color: #ff9f22;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    height: 32px;
+    width: 256px;
+    justify-self: center; 
+    border: solid 2px #060606;
+    border-radius: 10px;
+    cursor: pointer; 
+}
+
+.container-nome-jogadores {
+    height: 100px;
+    width: 75%;
+    padding: 10px;
+    background-color: #060606;
+    border-radius: 10px;
+}
+
+#nome_jogadores {
+    max-height: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    padding-right: 5px;
+}
+
+#nome_jogadores::-webkit-scrollbar {
+    width: 6px;
+}
+
+#nome_jogadores::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+
+#nome_jogadores::-webkit-scrollbar-thumb {
+    background: #ff9f22;
+    border-radius: 4px;
+}
+
+#nome_jogadores::-webkit-scrollbar-thumb:hover {
+    background: #d67d00;
+}
+
+.jogador-campo label {
+    font-size: 20px;
+    width: 80px;
+}
+
+.jogador-campo input {
+    height: 40px;
+    width: 60%;
+    margin: 6px;
+    padding: 6px;
+    border: solid 2px;
+    border-radius: 10px;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-size: 20px;
+    color: #e2e8f0;  
+}
+
+#nome_p1 {
+    background-color: #0c2367;
+    border-color: #010528;
+}
+
+#nome_p2 {
+    background-color: #de2533;
+    border-color: #662038;
+}
+
+#nome_p3 {
+    background-color: #257d68;
+    border-color: #0c3d39;
+}
+
+#nome_p4 {
+    background-color: #4f5469;
+    border-color: #17171b;
+}
+
+.usar-dados {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+.botoes-usar-dados {
+    flex-direction: row;
+    margin-bottom: 32px;
+}
+
+.botao-ativo {
+    height: 36px;
+    width: 84px;
+    border: solid 2px #060606;
+    border-radius: 20px;
+    background-color: #ff9f22;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+.botao-inativo {
+    height: 36px;
+    width: 84px;
+    border: solid 2px #060606;
+    border-radius: 20px;
+    background-color: #464646;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+.botao-iniciar {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#btn_iniciar_jogo {
+    width: 70%;
+    height: 48px;
+    border: solid 2px #060606;
+    border-radius: 20px;
+    background-color: #ff9f22;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-weight: bold;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+#conteudo-principal {
+    position: fixed;
+    bottom: 0;
+    height: 90%;
+    width: 100%;
+    background-color: rgb(22, 24, 39);
+}
+
+/* TABULEIRO */
+
+#tabuleiro {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 1.6fr repeat(9, 1fr) 1.6fr;
+    grid-template-rows: 1.6fr repeat(9, 1fr) 1.6fr; 
+    height: 90vh;
+    width: 90vh;
+    margin-top: 0.5%;
+    background-color: #0d0d0d;
+    border: 4px solid #1a1a1a;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 18px 0px;
+}
+
+/* CASAS INDIVIDUAIS */
+
+.casa {
+    position: relative;
+    border: 1px solid #262626;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding-bottom: 4px;
+    overflow: hidden;
+}
+
+.faixa-cor {
+    width: 92%;
+    height: 12px;
+    margin-bottom: 4px;
+    border: solid 2px #9b9b9b;
+}
+
+.nome_propriedade {
+    font-family: sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    color: #e2e8f0;
+    text-align: center;
+    padding: 0 2px;
+    line-height: 1.1;
+    width: 100%;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.preco {
+    font-family: sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    color: #888888;
+    text-align: center;
+}
+
+/* CORES DAS FAIXAS */
+
+.propriedade-cinza .faixa-cor { background-color: #575757; }
+.propriedade-verde .faixa-cor { background-color: #2baa27; }
+.propriedade-azul .faixa-cor  { background-color: #0b259b; }
+.propriedade-rosa .faixa-cor  { background-color: #eb4196; }
+.propriedade-preto .faixa-cor { background-color: #000000; }
+.propriedade-branco .faixa-cor{ background-color: #e2e8f0; }
+.propriedade-roxo .faixa-cor  { background-color: #2f0358; }
+.propriedade-amarelo .faixa-cor{ background-color: #e0ae16; }
+
+/* POSICIONAMENTOS */
+
+/* CASAS DOS CANTOS */
+
+#casa_0 { grid-column: 11; grid-row: 11; }
+#casa_10 { grid-column: 1; grid-row: 11; }
+#casa_20 { grid-column: 1; grid-row: 1; }
+#casa_30 { grid-column: 11; grid-row: 1; }
+
+/* CASAS DA PRIMEIRA RUA */
+
+#casa_1 { grid-column: 10; grid-row: 11; }
+#casa_2 { grid-column: 9; grid-row: 11; }
+#casa_3 { grid-column: 8; grid-row: 11; }
+#casa_4 { grid-column: 7; grid-row: 11; }
+#casa_5 { grid-column: 6; grid-row: 11; }
+#casa_6 { grid-column: 5; grid-row: 11; }
+#casa_7 { grid-column: 4; grid-row: 11; }
+#casa_8 { grid-column: 3; grid-row: 11; }
+#casa_9 { grid-column: 2; grid-row: 11; }
+
+/* CASAS DA SEGUNDA RUA */
+
+#casa_11 { grid-column: 1; grid-row: 10; }
+#casa_12 { grid-column: 1; grid-row: 9; }
+#casa_13 { grid-column: 1; grid-row: 8; }
+#casa_14 { grid-column: 1; grid-row: 7; }
+#casa_15 { grid-column: 1; grid-row: 6; }
+#casa_16 { grid-column: 1; grid-row: 5; }
+#casa_17 { grid-column: 1; grid-row: 4; }
+#casa_18 { grid-column: 1; grid-row: 3; }
+#casa_19 { grid-column: 1; grid-row: 2; }
+
+/* CASAS DA TERCEIRA RUA */
+
+#casa_21 { grid-column: 2; grid-row: 1; }
+#casa_22 { grid-column: 3; grid-row: 1; }
+#casa_23 { grid-column: 4; grid-row: 1; }
+#casa_24 { grid-column: 5; grid-row: 1; }
+#casa_25 { grid-column: 6; grid-row: 1; }
+#casa_26 { grid-column: 7; grid-row: 1; }
+#casa_27 { grid-column: 8; grid-row: 1; }
+#casa_28 { grid-column: 9; grid-row: 1; }
+#casa_29 { grid-column: 10; grid-row: 1; }
+
+/* CASAS DA QUARTA RUA */
+
+#casa_31 { grid-column: 11; grid-row: 2; }
+#casa_32 { grid-column: 11; grid-row: 3; }
+#casa_33 { grid-column: 11; grid-row: 4; }
+#casa_34 { grid-column: 11; grid-row: 5; }
+#casa_35 { grid-column: 11; grid-row: 6; }
+#casa_36 { grid-column: 11; grid-row: 7; }
+#casa_37 { grid-column: 11; grid-row: 8; }
+#casa_38 { grid-column: 11; grid-row: 9; }
+#casa_39 { grid-column: 11; grid-row: 10; }
+
+/* ESTILO DAS CASAS DOS CANTOS */
+
+.casa-inicio, .casa-templo, .casa-fontes, .casa-selado {
+    text-align: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000; 
+}
+
+/* ESTILO DAS CASAS DE EXPLORAÇÃO */
+
+.sorte-reves {
+    font-family: sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    color: #e2e8f0;
+    text-align: center;
+    padding: 0 2px;
+    line-height: 1.1;
+    width: 100%;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;    
+}
+
+.sorte-reves img {
+    position: relative;
+    max-width: 60%;
+    max-height: 60%;
+    width: auto;
+    height: auto;
+    margin-bottom: 6px;
+}
+
+/* ESTILO DAS ESTAÇÕES DE BESOURO */
+
+.stag-station {
+    font-family: sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    color: #e2e8f0;
+    text-align: center;
+    padding: 0 2px;
+    line-height: 1.1;
+    width: 100%;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;     
+}
+
+.stag {
+    position: relative;
+    max-height: 55%;
+    max-width: 40%;
+    height: auto;
+    width: auto;
+}
+
+/* ESTILO DAS COMPANHIAS */
+
+.companhia-lago-azul, .companhia-casa-prazer,
+.companhia-lago-unn, .companhia-coliseu {
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #e2e8f0;
+    text-align: center;
+    padding: 0 2px;
+    line-height: 1.1;
+    width: 100%;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;   
+}
+
+/* CENTRO DO TABULEIRO */
+
+#centro_tabuleiro {
+    position: relative;
+    grid-column: 2/11;
+    grid-row: 2/11;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+}
+
+#vez_de_jogador {
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.container-dados {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.dado {
+    height: 56px;
+    width: 56px;
+    align-content: center;
+    font-family: sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    color: #0d0d0d;
+    background-color: white;
+    border: solid 3px #000000;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.botoes-centro-tabuleiro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-passar-vez-inativo, .btn-passar-vez-ativo {
+    height: 24px;
+    width: 35%;
+    font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.btn-passar-vez-inativo {
+    border: solid 2px #3b3b3b;
+    color: #3b3b3b;
+    background-color: transparent;
+    cursor: not-allowed;
+}
+
+.btn-passar-vez-ativo {
+    border: solid 2px #0a0f1f;
+    color: #0a0f1f;
+    background-color: #373d55;
+    cursor: pointer;
+}
+
+/* ANIMAÇÃO DE ROLAMENTO DOS DADOS */
+
+@keyframes anim-rolar {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.rolando {
+    animation: anim-rolar 0.6s ease-in-out infinite;
+}
+
+/* PEÕES */
+
+.container-peoes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    gap: 1px 4px;
+    z-index: 10;
+}
+
+.peao-imagem {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8));
+    transition: transform 0.2s ease;
+    pointer-events: none;
+}
+
+/* INFORMAÇÕES DOS JOGADORES */
+
+.container-lista-jogadores {
+    position: fixed;
+    margin-top: 0.5%;
+    margin-left: 0.3%;
+    padding: 8px;
+    height: 37%;
+    width: 23%;
+    background-color: #12151f;
+    border: solid 4px #0a0f1f;
+    border-radius: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.container-lista-jogadores::-webkit-scrollbar {
+    width: 8px;
+}
+
+.container-lista-jogadores::-webkit-scrollbar-track {
+    background: #0e1018;
+    border-radius: 4px;
+}
+
+.container-lista-jogadores::-webkit-scrollbar-thumb {
+    background: #283049;
+    border-radius: 4px;
+}
+
+.container-lista-jogadores::-webkit-scrollbar-thumb:hover {
+    background: #1a1f30;
+}
+
+#titulo_jogadores {
+    font-size: 24px;
+    margin-top: 1px;
+}
+
+.container-jogador {
+    display: flex;
+    margin-bottom: 7px;
+    height: 48px;
+    width: 100%;
+    background-color: #22252e;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.player-icon-menu {
+    height: 40px;
+    width: auto;
+}
+
+.info-jogador {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+    flex-grow: 1;
+}
+
+.nome-jogador {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.linha-detalhes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.qnt-propriedades {
+    margin-bottom: 0;
+    margin-left: 8px;
+    font-size: 12px;
+    color: #b8b8b8;
+}
+
+.txt-selado {
+    color: #d67d00;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.container-geo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 10px;
+}
+
+.geo-icon {
+    height: 20px;
+    width: auto;
+}
+
+.qnt-geo {
+    font-size: 16px;
+    margin-right: 0;
+}
+
+.info-jogador p, .qnt-geo {
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* CAMPO DE CADA JOGADOR */
+
+.knight {
+    border: solid 2px #0c2367;
+}
+
+.hornet {
+    border: solid 2px #de2533;
+}
+
+.quirrel {
+    border: solid 2px #257d68;
+}
+
+.zote {
+    border: solid 2px #17171b;
+}
+
+/* MODAIS */
+
+/* MODAL DE MENSAGENS */
+
+#modal_mensagens {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 30%;
+    width: 30%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9999; 
+}
+
+#mensagem {
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 32px;   
+}
+
+.container-botao-mensagem {
+    width: 40%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* MODAL DE COMPRA DE PROPRIEDADES */
+
+#modal_compra_propriedades {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;
+}
+
+#titulo_propriedade_avenda {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15%;
+}
+
+.container-faixa-cor {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#pergunta_comprar {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15%;
+}
+
+.container-botoes-compra {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    margin: 0 auto;
+    gap: 24px;
+}
