@@ -37,7 +37,12 @@ const textosG = {
         btn_comprar_propriedade: "Comprar",
         btn_batalhar: "Batalhar",
         btn_pagar_aluguel: "Pagar",
-        lancar_dados: "Rolar os Dados"
+        lancar_dados: "Rolar os Dados",
+        titulo_companhia_avenda: "Companhia à Venda!",
+        txt_companhia: "Companhia",
+        btn_passar_companhia: "Passar",
+        btn_comprar_companhia: "Comprar",
+        btn_multiplicar_companhia: "Rolar os Dados"
     },
 
     // Textos gerais em Inglês
@@ -64,7 +69,12 @@ const textosG = {
         btn_comprar_propriedade: "Buy",
         btn_batalhar: "Battle",
         btn_pagar_aluguel: "Pay",
-        lancar_dados: "Roll the Dice"
+        lancar_dados: "Roll the Dice",
+        titulo_companhia_avenda: "Company for Sale!",
+        txt_companhia: "Company",
+        btn_passar_companhia: "Pass",
+        btn_comprar_companhia: "Buy",
+        btn_multiplicar_companhia: "Roll the Dice"
     }
 }
 
@@ -904,6 +914,11 @@ function atualizarInterface() {
     document.getElementById("btn_batalhar").textContent = tg.btn_batalhar;
     document.getElementById("btn_pagar_aluguel").textContent = tg.btn_pagar_aluguel;
     document.getElementById("lancar_dados").textContent = tg.lancar_dados;
+    document.getElementById("titulo_companhia_avenda").textContent = tg.titulo_companhia_avenda;
+    document.getElementById("txt_companhia").textContent = tg.txt_companhia;
+    document.getElementById("btn_passar_companhia").textContent = tg.btn_passar_companhia;
+    document.getElementById("btn_comprar_companhia").textContent = tg.btn_comprar_companhia;
+    document.getElementById("btn_multiplicar_companhia").textContent = tg.btn_multiplicar_companhia;
 
     // Nomes das propriedades
 
@@ -936,7 +951,6 @@ function mudarIdioma() {
     }
     atualizarInterface();
     atualizarPropriedades();
-    atualizarModalCompra(jogadores[jogadorAtual]);
     atualizarVez();
 }
 
@@ -1092,6 +1106,7 @@ function rolarDados() {
             tirouDupla++;
             if (tirouDupla >= 3) {
                 selarJogador(jogadorAtual);
+                jogadores[jogadorAtual].posicao = 10;
                 tirouDupla = 0;
                 jogadorAtual = (jogadorAtual + 1) % jogadores.length;
                 atualizarVez();
@@ -1172,7 +1187,11 @@ function executarAcao(jogador) {
 
     if (casaAtual.tipo === "propriedade") {
         if (casaAtual.dono === null) {
-            atualizarModalCompra(jogador);
+            if (idiomaAtual === "pt") {
+                document.getElementById("pergunta_comprar").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
+            } else {
+                document.getElementById("pergunta_comprar").textContent = `Do you want to buy ${textosP["en"]["casa_" + casaAtual.id]} for ${casaAtual.preco} Geo?`;   
+            }
             document.getElementById("faixa_cor_modal").className = `propriedade-${casaAtual.grupo}`;
             document.getElementById("modal_compra_propriedades").style.display = "block";
             blurBG.style.display = "block";
@@ -1189,9 +1208,34 @@ function executarAcao(jogador) {
             blurBG.style.display = "block";
         }
     }
+
+    // Casas do tipo "Companhia"
+
+    else if (casaAtual.tipo === "companhia") {
+        if (casaAtual.dono === null) {
+            if (idiomaAtual === "pt") {
+                document.getElementById("pergunta_comprar_companhia").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
+            } else {
+                document.getElementById("pergunta_comprar_companhia").textContent = `Do you want to buy ${textosP["en"]["casa_" + casaAtual.id]} for ${casaAtual.preco} Geo?`;
+            }
+            document.getElementById("modal_compra_companhias").style.display = "block";
+            blurBG.style.display = "block";
+        } else if (casaAtual.dono != jogador.id) {
+            if (idiomaAtual === "pt") {
+                document.getElementById("titulo_pagar_companhia").innerHTML = `Companhia de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
+                document.getElementById("nome_companhia").textContent = `Multiplicador de ${textosP["pt"]["casa_" + casaAtual.id]}: `;
+            } else {
+                document.getElementById("titulo_pagar_companhia").innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}'s</span> Company`;
+                document.getElementById("nome_companhia").textContent = `${textosP["en"]["casa_" + casaAtual.id]}'s Multiplier: `;
+            }
+            document.getElementById("multiplicador_companhia").textContent = casaAtual.aluguelBase;
+            document.getElementById("modal_pagar_companhia").style.display = "block";
+            blurBG.style.display = "block";
+        }
+    }
 }
 
-// Função para recusar a compra
+// Função para recusar a compra da propriedade
 
 function passarCompra() {
     document.getElementById("modal_compra_propriedades").style.display = "none";
@@ -1200,7 +1244,8 @@ function passarCompra() {
 
 // Função para comprar a propriedade
 
-function comprarPropriedade(jogador) {
+function comprarPropriedade() {
+    const jogador = jogadores[jogadorAtual];
     const casaAtual = propriedades[jogador.posicao];
     if (jogador.geo >= casaAtual.preco) {
         casaAtual.dono = jogadorAtual;
@@ -1343,15 +1388,80 @@ function pagarAluguel() {
     blurBG.style.display = "none";
 }
 
-// Função para atualizar os textos do modal de compras
+// Função para passar a compra da companhia
 
-function atualizarModalCompra(jogador) {
+function passarCompanhia() {
+    document.getElementById("modal_compra_companhias").style.display = "none";
+    blurBG.style.display = "none";   
+}
+
+// Função para comprar a companhia
+
+function comprarCompanhia() {
+    const jogador = jogadores[jogadorAtual];
     const casaAtual = propriedades[jogador.posicao];
-    if (idiomaAtual === "pt") {
-        document.getElementById("pergunta_comprar").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
+    if (jogador.geo >= casaAtual.preco) {
+        casaAtual.dono = jogadorAtual;
+        jogador.geo -= casaAtual.preco;
+        atualizarGeo();
+        atualizarPropriedades();
+        document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
+        document.getElementById("modal_compra_companhias").style.display = "none";
+        blurBG.style.display = "none";
     } else {
-        document.getElementById("pergunta_comprar").textContent = `Do you want to buy ${textosP["en"]["casa_" + casaAtual.id]} for ${casaAtual.preco} Geo?`;   
+        if (idiomaAtual === "pt") {
+            exibirMensagem("Você não possui Geo o suficiente!");
+        } else {
+            exibirMensagem("You don't have enough Geo!");
+        }
     }
+}
+
+// Função para pagar o valor de uma companhia
+
+function pagarCompanhia() {
+    const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
+    const dono = casaAtual.dono;
+    const multiplicador = casaAtual.aluguelBase;
+    const rolarDados = document.getElementById("btn_multiplicar_companhia");
+    if (rolarDados.style.cursor === "not-allowed") return;
+    rolarDados.style.cursor = "not-allowed";
+    const d1 = document.getElementById("dado_1co");
+    const d2 = document.getElementById("dado_2co")
+    d1.classList.add("rolando");
+    d2.classList.add("rolando");
+    setTimeout(() => {
+        d1.classList.remove("rolando");
+        d2.classList.remove("rolando");
+        const dado1 = Math.floor(Math.random() * 6) + 1;
+        const dado2 = Math.floor(Math.random() * 6) + 1;
+        const valorAPagar = (dado1 + dado2) * multiplicador;  
+        d1.textContent = dado1;
+        d2.textContent = dado2;
+        setTimeout(() => {
+            jogador.geo -= valorAPagar;
+            jogadores[dono].geo += valorAPagar;
+            if (idiomaAtual === "pt") {
+                document.getElementById("resultado_pagar_companhia").textContent = `${jogador.nome} deve pagar ${valorAPagar} Geo para ${jogadores[dono].nome}`;
+            } else {
+                document.getElementById("resultado_pagar_companhia").textContent = `${jogador.nome} must pay ${valorAPagar} Geo to ${jogadores[dono].nome}`;
+            }
+            document.getElementById("modal_pagar_companhia_result").style.display = "block";
+            xBlurBG.style.display = "block";
+        }, 1500);
+    }, 500); 
+}
+
+// Função para fechar o modal do resultado do valor a pagar na companhia
+
+function fecharValorCompanhia() {
+    atualizarGeo();
+    document.getElementById("modal_pagar_companhia_result").style.display = "none";
+    xBlurBG.style.display = "none";
+    document.getElementById("modal_pagar_companhia").style.display = "none";
+    blurBG.style.display = "none";
+    document.getElementById("btn_multiplicar_companhia").style.cursor = "pointer";
 }
 
 // Função para selar um jogador

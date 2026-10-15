@@ -363,7 +363,7 @@
                 <p id="pergunta_comprar"></p>
                 <div class="container-botoes-compra">
                     <button id="btn_passar_compra" class="botao-secundario" onclick="passarCompra()"></button>
-                    <button id="btn_comprar_propriedade" class="botao-primario" onclick="comprarPropriedade(jogadores[jogadorAtual])"></button>
+                    <button id="btn_comprar_propriedade" class="botao-primario" onclick="comprarPropriedade()"></button>
                 </div>
             </div>
 
@@ -400,6 +400,41 @@
                 <h1 id="titulo_vencedor"></h1>
                 <p id="anuncio_perdedor"></p>
                 <button id="btn_batalha_ok" class="botao-primario" onclick="fecharAnuncio()">Ok</button>
+            </div>
+
+            <!--Modal de compra de companhias-->
+
+            <div id="modal_compra_companhias" style="display: none;">
+                <h1 id="titulo_companhia_avenda"></h1>
+                <h2 id="txt_companhia"></h2>
+                <p id="pergunta_comprar_companhia"></p>
+                <div class="container-botoes-compra">
+                    <button id="btn_passar_companhia" class="botao-secundario" onclick="passarCompanhia()"></button>
+                    <button id="btn_comprar_companhia" class="botao-primario" onclick="comprarCompanhia()"></button>
+                </div>
+            </div>
+
+            <!--Modal de pagamento de companhia-->
+
+            <div id="modal_pagar_companhia" style="display: none;">
+                <h1 id="titulo_pagar_companhia"></h1>
+                <div class="qnt-geo-pagar">
+                    <p id="nome_companhia"></p>
+                    <img src="imagens/geo.png" class="geo-symbol">
+                    <p id="multiplicador_companhia"></p>
+                </div>
+                <div class="container-dados">
+                    <div id="dado_1co" class="dado">1</div>
+                    <div id="dado_2co" class="dado">1</div>
+                </div>
+                <button id="btn_multiplicar_companhia" class="botao-primario" onclick="pagarCompanhia()"></button>
+            </div>
+
+            <!--Modal de exibição do valor a pagar na companhia-->
+
+            <div id="modal_pagar_companhia_result" style="display: none;">
+                <p id="resultado_pagar_companhia"></p>
+                <button id="btn_companhia_ok" class="botao-primario" onclick="fecharValorCompanhia()">Ok</button>
             </div>
 
         </div>
