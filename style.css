@@ -588,7 +588,7 @@ hr {
     justify-content: center;
     align-content: center;
     align-items: center;
-    gap: 0 4px;
+    gap: 0 1px;
     z-index: 10;
 }
 
@@ -846,7 +846,7 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 10%;
     gap: 4px;
 }
 
@@ -1019,6 +1019,14 @@ hr {
     margin-bottom: 12px;
 }
 
+.qnt-geo-pagarc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 4px;
+}
+
 #nome_companhia {
     font-family: sans-serif;
     font-size: 16px;
@@ -1068,4 +1076,116 @@ hr {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 16px;  
+}
+
+/* MODAL DE COMPRA DE ESTAÇÕES */
+
+#modal_compra_estacoes {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;
+}
+
+#titulo_estacao_avenda {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15%;
+}
+
+#txt_estacao {
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px; 
+}
+
+#pergunta_comprar_estacao {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15%;
+}
+
+/* MODAL DE USO DAS ESTAÇÕES */
+
+#modal_utilizar_estacao {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;
+}
+
+#titulo_proprietario_estacao {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+#aluguel_estacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 4px;    
+}
+
+#txt_aluguel_estacao {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+#valor_aluguel_estacao {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#aluguel_uso_estacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 4px;    
+}
+
+#txt_custo_uso_estacao {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+#valor_uso_estacao {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
 }

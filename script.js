@@ -8,6 +8,7 @@ let jogadorAtual = 0;
 let tirouDupla = 0;
 let totalP1 = 0;
 let totalP2 = 0;
+let valorGenerico = 0;
 
 // Declaração dos textos nos dois idiomas
 
@@ -42,7 +43,14 @@ const textosG = {
         txt_companhia: "Companhia",
         btn_passar_companhia: "Passar",
         btn_comprar_companhia: "Comprar",
-        btn_multiplicar_companhia: "Rolar os Dados"
+        btn_multiplicar_companhia: "Rolar os Dados",
+        titulo_estacao_avenda: "Estação à Venda!",
+        txt_estacao: "Estação de Besouro",
+        pergunta_comprar_estacao: "Deseja comprar a Estação de Besouro por 2500 Geo?",
+        btn_passar_estacao: "Passar",
+        btn_comprar_estacao: "Comprar",
+        btn_nao_usar_estacao: "Não Usar",
+        btn_usar_estacao: "Usar Estação"
     },
 
     // Textos gerais em Inglês
@@ -74,7 +82,14 @@ const textosG = {
         txt_companhia: "Company",
         btn_passar_companhia: "Pass",
         btn_comprar_companhia: "Buy",
-        btn_multiplicar_companhia: "Roll the Dice"
+        btn_multiplicar_companhia: "Roll the Dice",
+        titulo_estacao_avenda: "Station for Sale!",
+        txt_estacao: "Stag Station",
+        pergunta_comprar_estacao: "Do you want to buy the Stag Station for 2500 Geo?",
+        btn_passar_estacao: "Pass",
+        btn_comprar_estacao: "Buy",
+        btn_nao_usar_estacao: "Do Not",
+        btn_usar_estacao: "Use Station"
     }
 }
 
@@ -919,6 +934,13 @@ function atualizarInterface() {
     document.getElementById("btn_passar_companhia").textContent = tg.btn_passar_companhia;
     document.getElementById("btn_comprar_companhia").textContent = tg.btn_comprar_companhia;
     document.getElementById("btn_multiplicar_companhia").textContent = tg.btn_multiplicar_companhia;
+    document.getElementById("titulo_estacao_avenda").textContent = tg.titulo_estacao_avenda;
+    document.getElementById("txt_estacao").textContent = tg.txt_estacao;
+    document.getElementById("pergunta_comprar_estacao").textContent = tg.pergunta_comprar_estacao;
+    document.getElementById("btn_passar_estacao").textContent = tg.btn_passar_estacao;
+    document.getElementById("btn_comprar_estacao").textContent = tg.btn_comprar_estacao;
+    document.getElementById("btn_nao_usar_estacao").textContent = tg.btn_nao_usar_estacao;
+    document.getElementById("btn_usar_estacao").textContent = tg.btn_usar_estacao;
 
     // Nomes das propriedades
 
@@ -1233,6 +1255,59 @@ function executarAcao(jogador) {
             blurBG.style.display = "block";
         }
     }
+
+    // Casas do tipo "Estação"
+
+    else if (casaAtual.tipo === "estacao") {
+        if (casaAtual.dono === null) {
+            document.getElementById("modal_compra_estacoes").style.display = "block";
+            blurBG.style.display = "block";
+        } else {
+            let aluguel = 0;
+            let custoUso = 0;
+            if (idiomaAtual === "pt") {
+                document.getElementById("titulo_proprietario_estacao").innerHTML = `Estação de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
+                document.getElementById("txt_aluguel_estacao").textContent = "Você é o dono da Estação";
+                document.getElementById("txt_custo_uso_estacao").textContent = "Como você é o dono, pode usá-la de graça!";
+            } else {
+                document.getElementById("titulo_proprietario_estacao").innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}'s</span> Station`;
+                document.getElementById("txt_aluguel_estacao").textContent = "You are the Station owner";
+                document.getElementById("txt_custo_uso_estacao").textContent = "Since you're the owner, you can use it for free!";   
+            }
+            document.getElementById("simbolo_geo1").style.display = "none";
+            document.getElementById("valor_aluguel_estacao").style.display = "none";
+            document.getElementById("simbolo_geo2").style.display = "none";
+            document.getElementById("valor_uso_estacao").style.display = "none";
+            if (casaAtual.dono != jogador.id) {
+                let qntEstacoes = -1;
+                for (let i = 5; i <= 35; i+= 10) {
+                    if (propriedades[i].dono === casaAtual.dono) {
+                        qntEstacoes++;
+                    }
+                }
+                aluguel = casaAtual.alugueis[qntEstacoes];
+                custoUso = casaAtual.custoUso[qntEstacoes];
+                valorGenerico = custoUso;
+                jogador.geo -= aluguel;
+                jogadores[casaAtual.dono].geo += aluguel;
+                if (idiomaAtual === "pt") {
+                    document.getElementById("txt_aluguel_estacao").textContent = "Valor do aluguel: ";
+                    document.getElementById("txt_custo_uso_estacao").textContent = "Custo de Uso da Estação: ";
+                } else {
+                    document.getElementById("txt_aluguel_estacao").textContent = "Rent Value: ";
+                    document.getElementById("txt_custo_uso_estacao").textContent = "Station's Use Cost: ";   
+                }
+                document.getElementById("valor_aluguel_estacao").textContent = aluguel;
+                document.getElementById("valor_uso_estacao").textContent = custoUso;
+                document.getElementById("simbolo_geo1").style.display = "block";
+                document.getElementById("valor_aluguel_estacao").style.display = "block";
+                document.getElementById("simbolo_geo2").style.display = "block";
+                document.getElementById("valor_uso_estacao").style.display = "block";
+            }
+            document.getElementById("modal_utilizar_estacao").style.display = "block";
+            blurBG.style.display = "block";
+        }
+    }
 }
 
 // Função para recusar a compra da propriedade
@@ -1462,6 +1537,85 @@ function fecharValorCompanhia() {
     document.getElementById("modal_pagar_companhia").style.display = "none";
     blurBG.style.display = "none";
     document.getElementById("btn_multiplicar_companhia").style.cursor = "pointer";
+}
+
+// Função para recusar a compra de uma estação
+
+function passarEstacao() {
+    document.getElementById("modal_compra_estacoes").style.display = "none";
+    blurBG.style.display = "none";
+}
+
+// Função para comprar uma estação
+
+function comprarEstacao() {
+    const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
+    if (jogador.geo >= casaAtual.preco) {
+        casaAtual.dono = jogadorAtual;
+        jogador.geo -= casaAtual.preco;
+        atualizarGeo();
+        atualizarPropriedades();
+        document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
+        document.getElementById("modal_compra_estacoes").style.display = "none";
+        blurBG.style.display = "none";
+    } else {
+        if (idiomaAtual === "pt") {
+            exibirMensagem("Você não possui Geo o suficiente!");
+        } else {
+            exibirMensagem("You don't have enough Geo!");
+        }
+    }
+}
+
+// Função para não usar a estação
+
+function naoUsarEstacao() {
+    valorGenerico = 0;
+    atualizarGeo();
+    document.getElementById("modal_utilizar_estacao").style.display = "none";
+    blurBG.style.display = "none";
+}
+
+// Função para usar a estação
+
+function usarEstacao() {
+    const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
+    if (jogador.geo >= valorGenerico) {
+        jogador.geo -= valorGenerico;
+        jogadores[casaAtual.dono].geo += valorGenerico;
+        valorGenerico = 0;
+        atualizarGeo();
+        const passarVez = document.getElementById("passar_vez");
+        passarVez.className = "btn-passar-vez-inativo";
+        document.getElementById("modal_utilizar_estacao").style.display = "none";
+        blurBG.style.display = "none";
+        for (let i = 0; i <= 39 ; i++) {
+            const elementoCasa = document.getElementById("casa_" + i);
+            let distancia = (i - casaAtual.id + 40) % 40;
+            if (distancia >= 1 && distancia <= 9 && propriedades[i].id % 10 !== 0) {
+                elementoCasa.style.cursor = "pointer";
+                elementoCasa.onclick = function() {
+                    for (let x = 0; x <= 39; x++) {
+                        const casa = document.getElementById("casa_" + x);
+                        casa.style.cursor = "default";
+                        casa.onclick = null;
+                    }
+                    movimentoPeao(jogador.id, distancia);
+                };
+            } else {
+                elementoCasa.style.cursor = "not-allowed";
+                elementoCasa.onclick = null; 
+            }
+        }
+    } else {
+        if (idiomaAtual === "pt") {
+            exibirMensagem("Você não possui Geo o suficiente!");
+        } else {
+            exibirMensagem("You don't have enough Geo!");
+        }    
+    }
 }
 
 // Função para selar um jogador

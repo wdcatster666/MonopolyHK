@@ -418,7 +418,7 @@
 
             <div id="modal_pagar_companhia" style="display: none;">
                 <h1 id="titulo_pagar_companhia"></h1>
-                <div class="qnt-geo-pagar">
+                <div class="qnt-geo-pagarc">
                     <p id="nome_companhia"></p>
                     <img src="imagens/geo.png" class="geo-symbol">
                     <p id="multiplicador_companhia"></p>
@@ -435,6 +435,40 @@
             <div id="modal_pagar_companhia_result" style="display: none;">
                 <p id="resultado_pagar_companhia"></p>
                 <button id="btn_companhia_ok" class="botao-primario" onclick="fecharValorCompanhia()">Ok</button>
+            </div>
+
+            <!--Modal de compra das estações-->
+
+            <div id="modal_compra_estacoes" style="display: none;">
+                <h1 id="titulo_estacao_avenda"></h1>
+                <h2 id="txt_estacao"></h2>
+                <p id="pergunta_comprar_estacao"></p>
+                <div class="container-botoes-compra">
+                    <button id="btn_passar_estacao" class="botao-secundario" onclick="passarEstacao()"></button>
+                    <button id="btn_comprar_estacao" class="botao-primario" onclick="comprarEstacao()"></button>
+                </div> 
+            </div>
+
+            <!--Modal de utilização de estações-->
+
+            <div id="modal_utilizar_estacao" style="display: none;">
+                <h1 id="titulo_proprietario_estacao"></h1>
+                <div id="valores_da_estacao">
+                    <div id="aluguel_estacao">
+                        <p id="txt_aluguel_estacao"></p>
+                        <img src="imagens/geo.png" id="simbolo_geo1" class="geo-symbol">
+                        <p id="valor_aluguel_estacao"></p>
+                    </div>
+                    <div id="aluguel_uso_estacao">
+                        <p id="txt_custo_uso_estacao"></p>
+                        <img src="imagens/geo.png" id="simbolo_geo2" class="geo-symbol">
+                        <p id="valor_uso_estacao"></p>   
+                    </div>
+                </div>
+                <div class="container-botoes-compra">
+                    <button id="btn_nao_usar_estacao" class="botao-secundario" onclick="naoUsarEstacao()"></button>
+                    <button id="btn_usar_estacao" class="botao-primario" onclick="usarEstacao()"></button>
+                </div> 
             </div>
 
         </div>
