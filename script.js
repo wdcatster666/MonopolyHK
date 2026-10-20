@@ -1234,6 +1234,7 @@ function passarVez() {
     rolarDados.style.cursor = "pointer";
     jogadorAtual = (jogadorAtual + 1) % jogadores.length;
     atualizarVez();
+    verificarSelado();
 }
 
 // Função para exibir mensagens
@@ -1412,9 +1413,6 @@ function executarAcao(jogador) {
                 simbolo.src = "imagens/icones_cartas/icone_infeccao.png";
             } else {
                 simbolo.src = "imagens/icones_cartas/icone_fontes.png";
-                if (jogador.posicao > 20) {
-                    jogador.geo += 2000;
-                }
             }
             elementoTexto.textContent = texto;
             modalG.style.display = "block";
@@ -1433,6 +1431,7 @@ function executarAcao(jogador) {
 
 function executarCarta() {
     const jogador = jogadores[jogadorAtual];
+    const casaAtual = propriedades[jogador.posicao];
     const modalG = document.getElementById("modal_cartas");
     if (carta.tipo === "movimentoEspecial") {
         if (carta.id === 1) {
@@ -1766,14 +1765,30 @@ function selarJogador(jogador) {
     atualizarVez();
     document.getElementById("passar_vez").className = "btn-passar-vez-inativo";
     document.getElementById("rolar_dados").style.cursor = "pointer";
+    verificarSelado();
 }
 
 // Função para verificar se um jogador está selado
 
 function verificarSelado() {
-    if (jogadores[jogadorAtual].selado === true) {
-
+    const jogador = jogadores[jogadorAtual];
+    if (jogador.selado === true) {
+        if (idiomaAtual === "pt") {
+            exibirMensagem(`${jogador.nome} está selado e perdeu o turno! (Modo temporário)`);
+        } else {
+            exibirMensagem(`${jogador.nome} is sealed and lost the turn! (Temporary mode)`);
+        }
+        
+        // Libera o jogador para o próximo turno (remova isso quando implementar a prisão oficial)
+        jogador.selado = false;
+        
+        // Ajusta os botões para o próximo passar a vez corretamente
+        document.getElementById("passar_vez").className = "btn-passar-vez-ativo";
+        document.getElementById("rolar_dados").style.cursor = "not-allowed";
+        
+        return true; // Indica que o jogador estava selado
     }
+    return false;
 }
 
 atualizarCampos();
