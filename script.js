@@ -570,28 +570,28 @@ const cartasExploracao = [
         textoPt: "Um grupo de insetos te cercou, e você não teve escolha a não ser recuar! Volte 3 casas.",
         textoEn: "A group of bugs surrounded you, you had no choice but to retreat! Move back 3 spaces.",
         tipo: "movimento",
-        tipoMov: "voltar"
+        passos: -3
     },
     {
         id: 6,
         textoPt: "Você ouviu uma voz chamando seu nome atrás de você. Você volta o caminho para descobrir o que era, mas não encontra nada. Volte 6 casas.",
         textoEn: "You heard a voice calling your name behind you. You go back to find out what was that, but found nothing. Move back 6 spaces.",
         tipo: "movimento",
-        tipoMov: "voltar"
+        passos: -6
     },
     {
         id: 7,
         textoPt: "Um inseto enorme começou a perseguir você! Depois de fugir por um tempo, você conseguiu despistá-lo. Avance 3 casas.",
         textoEn: "A huge bug started running after you! After running away for some time, you managed to get rid of it. Move forward 3 spaces.",
         tipo: "movimento",
-        tipoMov: "avancar"
+        passos: 3
     },
     {
         id: 8,
         textoPt: "Você avistou um bando de insetos infectados carregando uma enorme quantidade de Geo. Você correu atrás deles, mas os perdeu de vista. Avance 6 casas.",
         textoEn: "You saw a pack of infected bugs carrying a huge amount of Geo. You ran after them, but lost them of your sight. Move forward 6 spaces.",
         tipo: "movimento",
-        tipoMov: "voltar"
+        passos: 6
     },
     {
         id: 9,
@@ -1178,7 +1178,16 @@ function movimentoPeao(idJogador, passos) {
                 atualizarGeo();
             }
             passosRestantes--;
-        } else {
+        } else if (passosRestantes < 0) {
+            jogador.posicao = (jogador.posicao - 1 + 40) % 40;
+            moverPeao(jogador.elementoPeao, jogador.posicao);
+            if (jogador.posicao === 0) {
+                jogador.geo += 2000;
+                atualizarGeo();
+            }
+            passosRestantes++;
+        }
+        else {
             clearInterval(intervalo);
             executarAcao(jogador);
             if (!jogador.selado) {
@@ -1391,7 +1400,7 @@ function executarAcao(jogador) {
     // Casas do tipo "Exploração"
 
     else if(casaAtual.tipo === "exploracao") {
-        numCarta = Math.floor(Math.random() * 5);
+        numCarta = Math.floor(Math.random() * 10);
         carta = cartasExploracao[numCarta];
         const elementoTexto = document.getElementById("txt_carta");
         const simbolo = document.getElementById("simbolo_carta");
@@ -1424,6 +1433,12 @@ function executarAcao(jogador) {
             } else {
                 simbolo.src = "imagens/icones_cartas/icone_companhia.png";
             }
+        }
+
+        // Cartas do tipo "Movimento"
+
+        else if (carta.tipo === "movimento") {
+            simbolo.src = "imagens/icones_cartas/icone_movimento.png";
         }
 
         elementoTexto.textContent = texto;
@@ -1466,6 +1481,18 @@ function executarCarta() {
         let passos = (destino - jogador.posicao + 40) % 40;
         movimentoPeao(jogadorAtual, passos);  
     }
+
+    // Movimento
+
+    else if (carta.tipo === "movimento") {
+        if (!carta.tipoMov) {
+            movimentoPeao(jogadorAtual, carta.passos);
+        } else {
+            document.getElementById("rolar_dados").style.cursor = "pointer";
+            document.getElementById("passar_vez").className = "btn-passar-vez-inativo";  
+        }
+    }
+
     modalG.style.display = "none";
     blurBG.style.display = "none";
     atualizarGeo();
