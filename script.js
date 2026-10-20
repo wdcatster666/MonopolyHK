@@ -1391,7 +1391,7 @@ function executarAcao(jogador) {
     // Casas do tipo "Exploração"
 
     else if(casaAtual.tipo === "exploracao") {
-        numCarta = Math.floor(Math.random() * 3);
+        numCarta = Math.floor(Math.random() * 5);
         carta = cartasExploracao[numCarta];
         const elementoTexto = document.getElementById("txt_carta");
         const simbolo = document.getElementById("simbolo_carta");
@@ -1414,10 +1414,21 @@ function executarAcao(jogador) {
             } else {
                 simbolo.src = "imagens/icones_cartas/icone_fontes.png";
             }
-            elementoTexto.textContent = texto;
-            modalG.style.display = "block";
-            blurBG.style.display = "block";
         }
+
+        // Cartas do tipo "Movimento Específico"
+
+        else if (carta.tipo === "movimentoEspecifico") {
+            if (carta.id === 3) {
+                simbolo.src = "imagens/icones_cartas/icone_stag.png";
+            } else {
+                simbolo.src = "imagens/icones_cartas/icone_companhia.png";
+            }
+        }
+
+        elementoTexto.textContent = texto;
+        modalG.style.display = "block";
+        blurBG.style.display = "block";
     }
 
     // Casa de ser selado
@@ -1433,6 +1444,9 @@ function executarCarta() {
     const jogador = jogadores[jogadorAtual];
     const casaAtual = propriedades[jogador.posicao];
     const modalG = document.getElementById("modal_cartas");
+
+    // Movimento Especial
+
     if (carta.tipo === "movimentoEspecial") {
         if (carta.id === 1) {
             selarJogador(jogador);
@@ -1440,9 +1454,20 @@ function executarCarta() {
             moverPeao(jogador.elementoPeao, carta.destino);
             jogador.posicao = carta.destino;
         }
-        modalG.style.display = "none";
-        blurBG.style.display = "none";
     }
+
+    // Movimento Específico
+
+    else if (carta.tipo === "movimentoEspecifico") {
+        let destino = jogador.posicao;
+        do {
+            destino = (destino + 1) % 40;
+        } while (propriedades[destino].tipo != carta.tipoCasa);
+        let passos = (destino - jogador.posicao + 40) % 40;
+        movimentoPeao(jogadorAtual, passos);  
+    }
+    modalG.style.display = "none";
+    blurBG.style.display = "none";
     atualizarGeo();
 }
 
