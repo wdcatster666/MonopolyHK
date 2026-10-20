@@ -9,6 +9,8 @@ let tirouDupla = 0;
 let totalP1 = 0;
 let totalP2 = 0;
 let valorGenerico = 0;
+let numCarta;
+let carta;
 
 // Declaração dos textos nos dois idiomas
 
@@ -50,7 +52,8 @@ const textosG = {
         btn_passar_estacao: "Passar",
         btn_comprar_estacao: "Comprar",
         btn_nao_usar_estacao: "Não Usar",
-        btn_usar_estacao: "Usar Estação"
+        btn_usar_estacao: "Usar Estação",
+        titulo_carta: "Carta de Exploração"
     },
 
     // Textos gerais em Inglês
@@ -89,7 +92,8 @@ const textosG = {
         btn_passar_estacao: "Pass",
         btn_comprar_estacao: "Buy",
         btn_nao_usar_estacao: "Do Not",
-        btn_usar_estacao: "Use Station"
+        btn_usar_estacao: "Use Station",
+        titulo_carta: "Exploration Card"
     }
 }
 
@@ -535,8 +539,8 @@ const cartasExploracao = [
     },
     {
         id: 1,
-        textoPt: "Você foi pego pelos guardas do Palácio Branco! Seja diretamente selado no Templo do Ovo Negro!",
-        textoEn: "You were caught by the White Palace guards! Get directly sealed in the Black Egg Temple!",
+        textoPt: "Você foi infectado pela Radiância! Seja selado até que você se cure da infecção.",
+        textoEn: "You got infected by The Radiance! Get sealed until you get cured from the infection.",
         tipo: "movimentoEspecial",
         destino: 10
     },
@@ -819,83 +823,159 @@ const cartasExploracao = [
     },
     {
         id: 41,
-        textoPt: "Você encontrou o Falso Cavaleiro!",
-        textoEn: "You encountered the False Knight!",
-        tipo: "batalha",
-        dados: 2,
-        valor: 600
+        textoPt: "Durante toda sua exploração, você encontrou vários pedaços de máscara, e agora, conseguiu uma nova máscara!",
+        textoEn: "During all of your exploration, you found various mask shards, and now, you got yourself a new mask!",
+        tipo: "mascara"
     },
     {
         id: 42,
-        textoPt: "Você encontrou o Receptáculo Quebrado!",
-        textoEn: "You encountered the Broken Vessel!",
+        textoPt: "Você encontrou o Guerreiro das Almas!",
+        textoEn: "You encountered the Soul Warrior!",
         tipo: "batalha",
-        dados: 3,
-        valor: 800
+        vida: 5,
+        dano: 1,
+        valor: 600
     },
     {
         id: 43,
-        textoPt: "Você encontrou o Cavaleiro da Colmeia!",
-        textoEn: "You encountered the Hive Knight!",
+        textoPt: "Você encontrou o Guardião Cristalizado!",
+        textoEn: "You encountered the Crystal Guardian!",
         tipo: "batalha",
-        dados: 4,
-        valor: 1000
+        vida: 6,
+        dano: 1,
+        valor: 800
     },
     {
         id: 44,
-        textoPt: "Você encontrou o Nosk!",
-        textoEn: "You encountered Nosk!",
+        textoPt: "Você encontrou o Falso Cavaleiro!",
+        textoEn: "You encountered the False Knight!",
         tipo: "batalha",
-        dados: 5,
+        vida: 7,
+        dano: 1,
         valor: 1200
     },
     {
         id: 45,
-        textoPt: "Você encontrou o Cavaleiro Vazio!",
-        textoEn: "You encountered the Hollow Knight!",
+        textoPt: "Você encontrou o Receptáculo Quebrado!",
+        textoEn: "You encountered the Broken Vessel!",
         tipo: "batalha",
-        dados: 6,
+        vida: 8,
+        dano: 1,
         valor: 1500
     },
     {
         id: 46,
-        textoPt: "Você encontrou as Lordes Louva-A-Deus!",
-        textoEn: "Your encountered the Mantis Lords!",
+        textoPt: "Você encontrou o Defensor do Esterco!",
+        textoEn: "Your encountered the Dung Defeder!",
         tipo: "batalha",
-        dados: 7,
+        vida: 9,
+        dano: 1,
         valor: 1800
     },
     {
         id: 47,
-        textoPt: "Você encontrou o Grande Sábio do Ferrão Sly!",
-        textoEn: "You encountered the Great Nailsage Sly!",
+        textoPt: "Você encontrou o Cavaleiro da Colmeia!",
+        textoEn: "You encountered the Hive Knight!",
         tipo: "batalha",
-        dados: 8,
-        valor: 2400
+        vida: 10,
+        dano: 1,
+        valor: 2000
     },
     {
         id: 48,
-        textoPt: "Você encontrou o Rei do Pesadelo!",
-        textoEn: "You encountered the Nightmare King!",
+        textoPt: "Você encontrou o Nosk!",
+        textoEn: "You encountered Nosk!",
         tipo: "batalha",
-        dados: 9,
-        valor: 3000
+        vida: 11,
+        dano: 1,
+        valor: 2200
     },
     {
         id: 49,
-        textoPt: "Você encontrou a Radiância!",
-        textoEn: "You encountered the Radiance!",
+        textoPt: "Você encontrou o Lorde Traidor!",
+        textoEn: "You encountered the Traitor Lord!",
         tipo: "batalha",
-        dados: 10,
-        valor: 5000
+        vida: 12,
+        dano: 1,
+        valor: 2600
     },
     {
         id: 50,
+        textoPt: "Você encontrou o Mestre das Almas!",
+        textoEn: "You encountered the Soul Master!",
+        tipo: "batalha",
+        vida: 13,
+        dano: 1,
+        valor: 3000
+    },
+    {
+        id: 51,
+        textoPt: "Você encontrou o Cavaleiro Vazio!",
+        textoEn: "You encountered the Hollow Knight!",
+        tipo: "batalha",
+        vida: 14,
+        dano: 1,
+        valor: 3500
+    },
+    {
+        id: 52,
+        textoPt: "Você encontrou a Domadora de Deuses!",
+        textoEn: "You encountered the God Tamer!",
+        tipo: "batalha",
+        vida: 15,
+        dano: 1,
+        valor: 4000
+    },
+    {
+        id: 53,
+        textoPt: "Você encontrou o Grande Sábio do Ferrão Sly!",
+        textoEn: "You encountered the Great Nailsage Sly!",
+        tipo: "batalha",
+        vida: 16,
+        dano: 1,
+        valor: 5000
+    },
+    {
+        id: 54,
+        textoPt: "Você encontrou as Lordes Louva-a-Deus!",
+        textoEn: "You encountered the Mantis Lords!",
+        tipo: "batalha",
+        vida: 17,
+        dano: 1,
+        valor: 6000
+    },
+    {
+        id: 55,
+        textoPt: "Você encontrou o Rei do Pesadelo!",
+        textoEn: "You encountered the Nightmare King!",
+        tipo: "batalha",
+        vida: 18,
+        dano: 2,
+        valor: 8000
+    },
+    {
+        id: 56,
+        textoPt: "Você encontrou a Radiância!",
+        textoEn: "You encountered the Radiance!",
+        tipo: "batalha",
+        vida: 19,
+        dano: 2,
+        valor: 9000
+    },
+    {
+        id: 57,
         textoPt: "Você encontrou o Receptáculo Puro!",
         textoEn: "You encountered the Pure Vessel!",
         tipo: "batalha",
-        dados: 11,
-        valor: 8000
+        vida: 20,
+        dano: 2,
+        valor: 10000
+    },
+    {
+        id: 58,
+        textoPt: "Você encontrou um amuleto! Ele pode ser útil em batalhas...",
+        textoEn: "You found a charm! It can be useful in battles...",
+        tipo: "amuleto"
     }
 ]
 
@@ -941,6 +1021,7 @@ function atualizarInterface() {
     document.getElementById("btn_comprar_estacao").textContent = tg.btn_comprar_estacao;
     document.getElementById("btn_nao_usar_estacao").textContent = tg.btn_nao_usar_estacao;
     document.getElementById("btn_usar_estacao").textContent = tg.btn_usar_estacao;
+    document.getElementById("titulo_carta").textContent = tg.titulo_carta;
 
     // Nomes das propriedades
 
@@ -1009,25 +1090,25 @@ function iniciarJogo() {
     }
     if (document.getElementById("p1").style.display == "block") {
         document.getElementById("status_p1").style.display = "flex";
-        jogadores.push({ id: 0, nome: `${listaJogadores[0]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#0c2367", elementoPeao: null, icone: "imagens/knight_icon.png" });
+        jogadores.push({ id: 0, nome: `${listaJogadores[0]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#0c2367", elementoPeao: null, icone: "imagens/icones_jogadores/knight_icon.png" });
     } else {
         document.getElementById("status_p1").style.display = "none";   
     }
     if (document.getElementById("p2").style.display == "block") {
         document.getElementById("status_p2").style.display = "flex";
-        jogadores.push({ id: 1, nome: `${listaJogadores[1]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#de2533", elementoPeao: null, icone: "imagens/hornet_icon.png" });
+        jogadores.push({ id: 1, nome: `${listaJogadores[1]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#de2533", elementoPeao: null, icone: "imagens/icones_jogadores/hornet_icon.png" });
     } else {
         document.getElementById("status_p2").style.display = "none";   
     }
     if (document.getElementById("p3").style.display == "block") {
         document.getElementById("status_p3").style.display = "flex";
-        jogadores.push({ id: 2, nome: `${listaJogadores[2]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#257d68", elementoPeao: null, icone: "imagens/quirrel_icon.png" });
+        jogadores.push({ id: 2, nome: `${listaJogadores[2]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#257d68", elementoPeao: null, icone: "imagens/icones_jogadores/quirrel_icon.png" });
     } else {
         document.getElementById("status_p3").style.display = "none";   
     }
     if (document.getElementById("p4").style.display == "block") {
         document.getElementById("status_p4").style.display = "flex";
-        jogadores.push({ id: 3, nome: `${listaJogadores[3]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#17171b", elementoPeao: null, icone: "imagens/zote_icon.png" });
+        jogadores.push({ id: 3, nome: `${listaJogadores[3]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#17171b", elementoPeao: null, icone: "imagens/icones_jogadores/zote_icon.png" });
     } else {
         document.getElementById("status_p4").style.display = "none";   
     }
@@ -1100,10 +1181,12 @@ function movimentoPeao(idJogador, passos) {
         } else {
             clearInterval(intervalo);
             executarAcao(jogador);
-            if (tirouDupla > 0) {
-                rolarDados.style.cursor = "pointer";
-            } else {
-                passarVez.className = "btn-passar-vez-ativo";
+            if (!jogador.selado) {
+                if (tirouDupla > 0) {
+                    rolarDados.style.cursor = "pointer";
+                } else {
+                    passarVez.className = "btn-passar-vez-ativo";
+                }
             }
         }
     }, 100);
@@ -1127,12 +1210,7 @@ function rolarDados() {
         if (dado1 === dado2) {
             tirouDupla++;
             if (tirouDupla >= 3) {
-                selarJogador(jogadorAtual);
-                jogadores[jogadorAtual].posicao = 10;
-                tirouDupla = 0;
-                jogadorAtual = (jogadorAtual + 1) % jogadores.length;
-                atualizarVez();
-                rolarDados.style.cursor = "pointer";
+                selarJogador(jogadores[jogadorAtual]);
                 return;
             }
         } else {
@@ -1308,6 +1386,65 @@ function executarAcao(jogador) {
             blurBG.style.display = "block";
         }
     }
+
+    // Casas do tipo "Exploração"
+
+    else if(casaAtual.tipo === "exploracao") {
+        numCarta = Math.floor(Math.random() * 3);
+        carta = cartasExploracao[numCarta];
+        const elementoTexto = document.getElementById("txt_carta");
+        const simbolo = document.getElementById("simbolo_carta");
+        const modalG = document.getElementById("modal_cartas");
+        let texto;
+        if (idiomaAtual === "pt") {
+            texto = carta.textoPt;
+        } else {
+            texto = carta.textoEn;
+        }
+
+        // Cartas do tipo "Movimento Especial"
+
+        if (carta.tipo === "movimentoEspecial") {
+            if (carta.id === 0) {
+                simbolo.src = "imagens/icones_cartas/icone_vento.png";
+                jogador.geo += 2000;
+            } else if (carta.id === 1) {
+                simbolo.src = "imagens/icones_cartas/icone_infeccao.png";
+            } else {
+                simbolo.src = "imagens/icones_cartas/icone_fontes.png";
+                if (jogador.posicao > 20) {
+                    jogador.geo += 2000;
+                }
+            }
+            elementoTexto.textContent = texto;
+            modalG.style.display = "block";
+            blurBG.style.display = "block";
+        }
+    }
+
+    // Casa de ser selado
+
+    else if (casaAtual.tipo === "sejaSelado") {
+        selarJogador(jogador);
+    }
+}
+
+// Função para executar a ação de uma carta
+
+function executarCarta() {
+    const jogador = jogadores[jogadorAtual];
+    const modalG = document.getElementById("modal_cartas");
+    if (carta.tipo === "movimentoEspecial") {
+        if (carta.id === 1) {
+            selarJogador(jogador);
+        } else {
+            moverPeao(jogador.elementoPeao, carta.destino);
+            jogador.posicao = carta.destino;
+        }
+        modalG.style.display = "none";
+        blurBG.style.display = "none";
+    }
+    atualizarGeo();
 }
 
 // Função para recusar a compra da propriedade
@@ -1621,8 +1758,14 @@ function usarEstacao() {
 // Função para selar um jogador
 
 function selarJogador(jogador) {
-    jogadores[jogador].selado = true;
-    moverPeao(jogadores[jogador].elementoPeao, 10);
+    jogador.selado = true;
+    jogador.posicao = 10;
+    moverPeao(jogador.elementoPeao, 10);
+    tirouDupla = 0;
+    jogadorAtual = (jogadorAtual + 1) % jogadores.length;
+    atualizarVez();
+    document.getElementById("passar_vez").className = "btn-passar-vez-inativo";
+    document.getElementById("rolar_dados").style.cursor = "pointer";
 }
 
 // Função para verificar se um jogador está selado
