@@ -1458,7 +1458,7 @@ function executarAcao(jogador) {
     // Casas do tipo "Exploração"
 
     else if(casaAtual.tipo === "exploracao") {
-        numCarta = Math.floor(Math.random() * 30);
+        numCarta = Math.floor(Math.random() * 32);
         carta = cartasExploracao[numCarta];
         const elementoTexto = document.getElementById("txt_carta");
         const simbolo = document.getElementById("simbolo_carta");
@@ -1526,6 +1526,28 @@ function executarAcao(jogador) {
                 simbolo.src = "imagens/icones_cartas/icone_geo_perca.png";
             }
             jogador.geo += carta.valor;
+        }
+
+        // Cartas do tipo "Geo Jogadores"
+
+        else if (carta.tipo === "geoJogadores") {
+            if (carta.acao === "pagar") {
+                simbolo.src = "imagens/icones_cartas/icone_geo_perca.png";
+                jogadores.forEach((outroJogador) => {
+                    if (outroJogador.id != jogadorAtual && !outroJogador.falido) {
+                        outroJogador.geo += carta.valor;
+                        jogador.geo -= carta.valor;
+                    }
+                });
+            } else {
+                simbolo.src = "imagens/icones_cartas/icone_geo_ganho.png";
+                jogadores.forEach((outroJogador) => {
+                    if (outroJogador.id != jogadorAtual && !outroJogador.falido) {
+                        outroJogador.geo -= carta.valor;
+                        jogador.geo += carta.valor;
+                    }
+                });
+            }
         }
 
         if (carta.id != 10) {
