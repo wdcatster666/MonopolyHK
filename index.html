@@ -480,6 +480,23 @@
                 <button id="btn_carta_ok" class="botao-primario" onclick="executarCarta()">Ok</button>
             </div>
 
+            <!--Modal para a carta de upgrade do ferrão-->
+
+            <div id="modal_carta_ferrao" style="display: none;">
+                <h1 id="titulo_carta_f"></h1>
+                <p id="txt_ferrao"></p>
+                <div class="container-ferroes">
+                    <img id="ferrao_atual" class="ferrao" src="">
+                    <img class="seta" src="imagens/outros/seta.png">
+                    <img id="ferrao_novo" class="ferrao" src="">
+                </div>
+                <p id="valor_ferrao"></p>
+                <div class="container-botoes-compra">
+                    <button id="btn_rejeitar_ferrao" class="botao-secundario" onclick="rejeitarFerrao()"></button>
+                    <button id="btn_comprar_ferrao" class="botao-primario" onclick="comprarFerrao()"></button>
+                </div>
+            </div>
+
         </div>
 
     </body>

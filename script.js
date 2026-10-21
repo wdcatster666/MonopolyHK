@@ -53,7 +53,9 @@ const textosG = {
         btn_comprar_estacao: "Comprar",
         btn_nao_usar_estacao: "Não Usar",
         btn_usar_estacao: "Usar Estação",
-        titulo_carta: "Carta de Exploração"
+        titulo_carta: "Carta de Exploração",
+        btn_rejeitar_ferrao: "Não Aprimorar",
+        btn_comprar_ferrao: "Aprimorar"
     },
 
     // Textos gerais em Inglês
@@ -93,7 +95,9 @@ const textosG = {
         btn_comprar_estacao: "Buy",
         btn_nao_usar_estacao: "Do Not",
         btn_usar_estacao: "Use Station",
-        titulo_carta: "Exploration Card"
+        titulo_carta: "Exploration Card",
+        btn_rejeitar_ferrao: "Do Not Upgrade",
+        btn_comprar_ferrao: "Upgrade"
     }
 }
 
@@ -605,8 +609,8 @@ const cartasExploracao = [
         textoPt: "Você decidiu dar uma passada no ferreiro para melhorar o seu ferrão.",
         textoEn: "You decided to visit the nailsmith to upgrade your nail.",
         tipo: "upgrade",
-        nomesPt: ["Ferrão Afiado", "Ferrão Canalizado", "Ferrão Serpenteado", "Ferrão Puro"],
-        nomesEn: ["Sharpened Nail", "Channelled Nail", "Coiled Nail", "Pure Nail"],
+        nomesPt: ["Ferrão Velho", "Ferrão Afiado", "Ferrão Canalizado", "Ferrão Serpenteado", "Ferrão Puro"],
+        nomesEn: ["Old Nail", "Sharpened Nail", "Channelled Nail", "Coiled Nail", "Pure Nail"],
         precos: [250, 800, 2000, 4000]
     },
     {
@@ -823,12 +827,19 @@ const cartasExploracao = [
     },
     {
         id: 41,
+        textoPt: "Você encontrou um item! Casulo de Sangue Vital foi adicionado aos seus itens.",
+        textoEn: "You found an item! Lifeblood Cocoon got added to your items.",
+        tipo: "item",
+        item: "lifeblood"
+    },
+    {
+        id: 42,
         textoPt: "Durante toda sua exploração, você encontrou vários pedaços de máscara, e agora, conseguiu uma nova máscara!",
         textoEn: "During all of your exploration, you found various mask shards, and now, you got yourself a new mask!",
         tipo: "mascara"
     },
     {
-        id: 42,
+        id: 43,
         textoPt: "Você encontrou o Guerreiro das Almas!",
         textoEn: "You encountered the Soul Warrior!",
         tipo: "batalha",
@@ -837,7 +848,7 @@ const cartasExploracao = [
         valor: 600
     },
     {
-        id: 43,
+        id: 44,
         textoPt: "Você encontrou o Guardião Cristalizado!",
         textoEn: "You encountered the Crystal Guardian!",
         tipo: "batalha",
@@ -846,7 +857,7 @@ const cartasExploracao = [
         valor: 800
     },
     {
-        id: 44,
+        id: 45,
         textoPt: "Você encontrou o Falso Cavaleiro!",
         textoEn: "You encountered the False Knight!",
         tipo: "batalha",
@@ -855,7 +866,7 @@ const cartasExploracao = [
         valor: 1200
     },
     {
-        id: 45,
+        id: 46,
         textoPt: "Você encontrou o Receptáculo Quebrado!",
         textoEn: "You encountered the Broken Vessel!",
         tipo: "batalha",
@@ -864,7 +875,7 @@ const cartasExploracao = [
         valor: 1500
     },
     {
-        id: 46,
+        id: 47,
         textoPt: "Você encontrou o Defensor do Esterco!",
         textoEn: "Your encountered the Dung Defeder!",
         tipo: "batalha",
@@ -873,7 +884,7 @@ const cartasExploracao = [
         valor: 1800
     },
     {
-        id: 47,
+        id: 48,
         textoPt: "Você encontrou o Cavaleiro da Colmeia!",
         textoEn: "You encountered the Hive Knight!",
         tipo: "batalha",
@@ -882,7 +893,7 @@ const cartasExploracao = [
         valor: 2000
     },
     {
-        id: 48,
+        id: 49,
         textoPt: "Você encontrou o Nosk!",
         textoEn: "You encountered Nosk!",
         tipo: "batalha",
@@ -891,7 +902,7 @@ const cartasExploracao = [
         valor: 2200
     },
     {
-        id: 49,
+        id: 50,
         textoPt: "Você encontrou o Lorde Traidor!",
         textoEn: "You encountered the Traitor Lord!",
         tipo: "batalha",
@@ -900,7 +911,7 @@ const cartasExploracao = [
         valor: 2600
     },
     {
-        id: 50,
+        id: 51,
         textoPt: "Você encontrou o Mestre das Almas!",
         textoEn: "You encountered the Soul Master!",
         tipo: "batalha",
@@ -909,7 +920,7 @@ const cartasExploracao = [
         valor: 3000
     },
     {
-        id: 51,
+        id: 52,
         textoPt: "Você encontrou o Cavaleiro Vazio!",
         textoEn: "You encountered the Hollow Knight!",
         tipo: "batalha",
@@ -918,7 +929,7 @@ const cartasExploracao = [
         valor: 3500
     },
     {
-        id: 52,
+        id: 53,
         textoPt: "Você encontrou a Domadora de Deuses!",
         textoEn: "You encountered the God Tamer!",
         tipo: "batalha",
@@ -927,7 +938,7 @@ const cartasExploracao = [
         valor: 4000
     },
     {
-        id: 53,
+        id: 54,
         textoPt: "Você encontrou o Grande Sábio do Ferrão Sly!",
         textoEn: "You encountered the Great Nailsage Sly!",
         tipo: "batalha",
@@ -936,7 +947,7 @@ const cartasExploracao = [
         valor: 5000
     },
     {
-        id: 54,
+        id: 55,
         textoPt: "Você encontrou as Lordes Louva-a-Deus!",
         textoEn: "You encountered the Mantis Lords!",
         tipo: "batalha",
@@ -945,7 +956,7 @@ const cartasExploracao = [
         valor: 6000
     },
     {
-        id: 55,
+        id: 56,
         textoPt: "Você encontrou o Rei do Pesadelo!",
         textoEn: "You encountered the Nightmare King!",
         tipo: "batalha",
@@ -954,7 +965,7 @@ const cartasExploracao = [
         valor: 8000
     },
     {
-        id: 56,
+        id: 57,
         textoPt: "Você encontrou a Radiância!",
         textoEn: "You encountered the Radiance!",
         tipo: "batalha",
@@ -963,7 +974,7 @@ const cartasExploracao = [
         valor: 9000
     },
     {
-        id: 57,
+        id: 58,
         textoPt: "Você encontrou o Receptáculo Puro!",
         textoEn: "You encountered the Pure Vessel!",
         tipo: "batalha",
@@ -972,7 +983,7 @@ const cartasExploracao = [
         valor: 10000
     },
     {
-        id: 58,
+        id: 59,
         textoPt: "Você encontrou um amuleto! Ele pode ser útil em batalhas...",
         textoEn: "You found a charm! It can be useful in battles...",
         tipo: "amuleto"
@@ -1022,6 +1033,9 @@ function atualizarInterface() {
     document.getElementById("btn_nao_usar_estacao").textContent = tg.btn_nao_usar_estacao;
     document.getElementById("btn_usar_estacao").textContent = tg.btn_usar_estacao;
     document.getElementById("titulo_carta").textContent = tg.titulo_carta;
+    document.getElementById("titulo_carta_f").textContent = tg.titulo_carta;
+    document.getElementById("btn_rejeitar_ferrao").textContent = tg.btn_rejeitar_ferrao;
+    document.getElementById("btn_comprar_ferrao").textContent = tg.btn_comprar_ferrao;
 
     // Nomes das propriedades
 
@@ -1090,25 +1104,69 @@ function iniciarJogo() {
     }
     if (document.getElementById("p1").style.display == "block") {
         document.getElementById("status_p1").style.display = "flex";
-        jogadores.push({ id: 0, nome: `${listaJogadores[0]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#0c2367", elementoPeao: null, icone: "imagens/icones_jogadores/knight_icon.png" });
+        jogadores.push({ id: 0,
+                         nome: `${listaJogadores[0]}`,
+                         posicao: 0,
+                         geo: 15000,
+                         ferrao: 1,
+                         mascaras: 5,
+                         amuletos: 0,
+                         selado: false,
+                         falido: false,
+                         cor: "#0c2367",
+                         elementoPeao: null,
+                         icone: "imagens/icones_jogadores/knight_icon.png" });
     } else {
         document.getElementById("status_p1").style.display = "none";   
     }
     if (document.getElementById("p2").style.display == "block") {
         document.getElementById("status_p2").style.display = "flex";
-        jogadores.push({ id: 1, nome: `${listaJogadores[1]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#de2533", elementoPeao: null, icone: "imagens/icones_jogadores/hornet_icon.png" });
+        jogadores.push({ id: 1,
+                         nome: `${listaJogadores[1]}`,
+                         posicao: 0,
+                         geo: 15000,
+                         ferrao: 1,
+                         mascaras: 5,
+                         amuletos: 0,
+                         selado: false,
+                         falido: false,
+                         cor: "#de2533",
+                         elementoPeao: null,
+                         icone: "imagens/icones_jogadores/hornet_icon.png" });
     } else {
         document.getElementById("status_p2").style.display = "none";   
     }
     if (document.getElementById("p3").style.display == "block") {
         document.getElementById("status_p3").style.display = "flex";
-        jogadores.push({ id: 2, nome: `${listaJogadores[2]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#257d68", elementoPeao: null, icone: "imagens/icones_jogadores/quirrel_icon.png" });
+        jogadores.push({ id: 2,
+                         nome: `${listaJogadores[2]}`,
+                         posicao: 0,
+                         geo: 15000,
+                         ferrao: 1,
+                         mascaras: 5,
+                         amuletos: 0,
+                         selado: false,
+                         falido: false,
+                         cor: "#257d68",
+                         elementoPeao: null,
+                         icone: "imagens/icones_jogadores/quirrel_icon.png" });
     } else {
         document.getElementById("status_p3").style.display = "none";   
     }
     if (document.getElementById("p4").style.display == "block") {
         document.getElementById("status_p4").style.display = "flex";
-        jogadores.push({ id: 3, nome: `${listaJogadores[3]}`, posicao: 0, geo: 15000, selado: false, falido: false, cor: "#17171b", elementoPeao: null, icone: "imagens/icones_jogadores/zote_icon.png" });
+        jogadores.push({ id: 3,
+                         nome: `${listaJogadores[3]}`,
+                         posicao: 0,
+                         geo: 15000,
+                         ferrao: 1,
+                         mascaras: 5,
+                         amuletos: 0,
+                         selado: false,
+                         falido: false,
+                         cor: "#17171b",
+                         elementoPeao: null,
+                         icone: "imagens/icones_jogadores/zote_icon.png" });
     } else {
         document.getElementById("status_p4").style.display = "none";   
     }
@@ -1400,7 +1458,7 @@ function executarAcao(jogador) {
     // Casas do tipo "Exploração"
 
     else if(casaAtual.tipo === "exploracao") {
-        numCarta = Math.floor(Math.random() * 10);
+        numCarta = Math.floor(Math.random() * 30);
         carta = cartasExploracao[numCarta];
         const elementoTexto = document.getElementById("txt_carta");
         const simbolo = document.getElementById("simbolo_carta");
@@ -1441,9 +1499,40 @@ function executarAcao(jogador) {
             simbolo.src = "imagens/icones_cartas/icone_movimento.png";
         }
 
-        elementoTexto.textContent = texto;
-        modalG.style.display = "block";
-        blurBG.style.display = "block";
+        // Carta do tipo "Upgrade" de ferrão
+
+        else if (carta.tipo === "upgrade") {
+            if (jogador.ferrao <= 4) {
+                if (idiomaAtual === "pt") {
+                    document.getElementById("txt_ferrao").textContent = `Você encontrou o Ferreiro, e ele ofereceu aprimorar o seu ${carta.nomesPt[jogador.ferrao - 1]} para ${carta.nomesPt[jogador.ferrao]}!`;
+                    document.getElementById("valor_ferrao").textContent = `Deseja aprimorar seu ferrão por ${carta.precos[jogador.ferrao]} Geo?`;
+                } else {
+                    document.getElementById("txt_ferrao").textContent = `You encountered the Nailsmith, and he offered to upgrade your ${carta.nomesEn[jogador.ferrao - 1]} to ${carta.nomesEn[jogador.ferrao]}!`;
+                    document.getElementById("valor_ferrao").textContent = `Do you want to upgrade your nail for ${carta.precos[jogador.ferrao]} Geo?`;   
+                }
+                document.getElementById("ferrao_atual").src = "imagens/ferroes/nail" + jogador.ferrao + ".png";
+                document.getElementById("ferrao_novo").src = "imagens/ferroes/nail" + (jogador.ferrao + 1) + ".png";
+            }
+            document.getElementById("modal_carta_ferrao").style.display = "block";
+            blurBG.style.display = "block";
+        }
+
+        // Cartas do tipo "Geo"
+
+        else if (carta.tipo === "geo") {
+            if (carta.valor > 0) {
+                simbolo.src = "imagens/icones_cartas/icone_geo_ganho.png";
+            } else {
+                simbolo.src = "imagens/icones_cartas/icone_geo_perca.png";
+            }
+            jogador.geo += carta.valor;
+        }
+
+        if (carta.id != 10) {
+            elementoTexto.textContent = texto;
+            modalG.style.display = "block";
+            blurBG.style.display = "block";
+        }
     }
 
     // Casa de ser selado
@@ -1496,6 +1585,24 @@ function executarCarta() {
     modalG.style.display = "none";
     blurBG.style.display = "none";
     atualizarGeo();
+}
+
+// Função para não aprimorar o ferrão
+
+function rejeitarFerrao() {
+    document.getElementById("modal_carta_ferrao").style.display = "none";
+    blurBG.style.display = "none";    
+}
+
+// Função para aprimorar o ferrão
+
+function comprarFerrao() {
+    const jogador = jogadores[jogadorAtual];
+    jogador.geo -= cartasExploracao[10].precos[jogador.ferrao];
+    jogador.ferrao++;
+    atualizarGeo();
+    document.getElementById("modal_carta_ferrao").style.display = "none";
+    blurBG.style.display = "none"; 
 }
 
 // Função para recusar a compra da propriedade

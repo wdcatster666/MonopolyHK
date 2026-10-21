@@ -1215,7 +1215,7 @@ hr {
 #titulo_carta {
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 16px;   
+    margin-bottom: 16px;
 }
 
 #simbolo_carta {
@@ -1225,6 +1225,70 @@ hr {
 }
 
 #txt_carta {
+    margin: 0 auto;
+    width: 90%;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* MODAL DE UPGRADE DO FERRÃO */
+
+#modal_carta_ferrao {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 55%;
+    width: 35%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;    
+}
+
+#titulo_carta_f {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;   
+}
+
+#txt_ferrao {
+    margin: 0 auto;
+    width: 90%;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.container-ferroes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.ferrao {
+    height: 96px;
+    width: 96px;
+}
+
+.seta {
+    height: 16px;
+    width: 32px;
+}
+
+#valor_ferrao {
     margin: 0 auto;
     width: 90%;
     font-family: sans-serif;
