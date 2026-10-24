@@ -55,7 +55,8 @@ const textosG = {
         btn_usar_estacao: "Usar Estação",
         titulo_carta: "Carta de Exploração",
         btn_rejeitar_ferrao: "Não Aprimorar",
-        btn_comprar_ferrao: "Aprimorar"
+        btn_comprar_ferrao: "Aprimorar",
+        txt_venda_falido: "Venda propriedades para continuar no jogo!"
     },
 
     // Textos gerais em Inglês
@@ -97,7 +98,8 @@ const textosG = {
         btn_usar_estacao: "Use Station",
         titulo_carta: "Exploration Card",
         btn_rejeitar_ferrao: "Do Not Upgrade",
-        btn_comprar_ferrao: "Upgrade"
+        btn_comprar_ferrao: "Upgrade",
+        txt_venda_falido: "Sell properties to continue on the game!"
     }
 }
 
@@ -699,8 +701,8 @@ const cartasExploracao = [
     },
     {
         id: 23,
-        textoPt: "Você quase foi derrotado por um inseto mais forte, mas durante a fuga, deixou cair alguns Geo. Perca 500 Geo.",
-        textoEn: "You almost got defeated by a stronger bug, but while running away, you let some Geo fall. lose 500 Geo.",
+        textoPt: "Você quase foi derrotado por um inseto mais forte, e durante a fuga, deixou cair alguns Geo. Perca 500 Geo.",
+        textoEn: "You almost got defeated by a stronger bug, and while running away, you let some Geo fall. lose 500 Geo.",
         tipo: "geo",
         valor: -500
     },
@@ -1036,6 +1038,7 @@ function atualizarInterface() {
     document.getElementById("titulo_carta_f").textContent = tg.titulo_carta;
     document.getElementById("btn_rejeitar_ferrao").textContent = tg.btn_rejeitar_ferrao;
     document.getElementById("btn_comprar_ferrao").textContent = tg.btn_comprar_ferrao;
+    document.getElementById("txt_venda_falido").textContent = tg.txt_venda_falido;
 
     // Nomes das propriedades
 
@@ -1326,6 +1329,7 @@ function atualizarGeo() {
     for (let i = 0; i < quantidade; i++) {
         document.getElementById("qnt_geo_" + i).textContent = jogadores[i].geo;
     }
+    verificarFalencia();
 }
 
 // Função para atualizar a quantidade de propriedades
@@ -1620,11 +1624,20 @@ function rejeitarFerrao() {
 
 function comprarFerrao() {
     const jogador = jogadores[jogadorAtual];
-    jogador.geo -= cartasExploracao[10].precos[jogador.ferrao];
-    jogador.ferrao++;
-    atualizarGeo();
-    document.getElementById("modal_carta_ferrao").style.display = "none";
-    blurBG.style.display = "none"; 
+    let precoFerrao = cartasExploracao[10].precos[jogador.ferrao]
+    if (jogador.geo >= precoFerrao) {
+        jogador.geo -= precoFerrao;
+        jogador.ferrao++;
+        atualizarGeo();
+        document.getElementById("modal_carta_ferrao").style.display = "none";
+        blurBG.style.display = "none"; 
+    } else {
+        if (idiomaAtual === "pt") {
+            exibirMensagem("Você não possui Geo o suficiente!");
+        } else {
+            exibirMensagem("You don't have enough Geo!");
+        }  
+    }
 }
 
 // Função para recusar a compra da propriedade
@@ -1757,11 +1770,11 @@ function lancarDadosBatalha() {
 function fecharAnuncio() {
     totalP1 = 0;
     totalP2 = 0;
-    atualizarGeo();
     document.getElementById("modal_batalha_aluguel_result").style.display = "none";
     xBlurBG.style.display = "none";
     document.getElementById("modal_batalha_aluguel").style.display = "none";
     blurBG.style.display = "none";
+    atualizarGeo();
     document.getElementById("valor_dados_p1").style.display = "none";
     document.getElementById("lancar_dados").style.cursor = "pointer";
 }
@@ -1775,9 +1788,9 @@ function pagarAluguel() {
     const valorAluguel = casaAtual.alugueis[casaAtual.casasConstruidas];
     jogador.geo -= valorAluguel;
     jogadores[dono].geo += valorAluguel;
-    atualizarGeo();
     document.getElementById("modal_pagar_aluguel").style.display = "none";
     blurBG.style.display = "none";
+    atualizarGeo();
 }
 
 // Função para passar a compra da companhia
@@ -1848,12 +1861,12 @@ function pagarCompanhia() {
 // Função para fechar o modal do resultado do valor a pagar na companhia
 
 function fecharValorCompanhia() {
-    atualizarGeo();
     document.getElementById("modal_pagar_companhia_result").style.display = "none";
     xBlurBG.style.display = "none";
     document.getElementById("modal_pagar_companhia").style.display = "none";
     blurBG.style.display = "none";
     document.getElementById("btn_multiplicar_companhia").style.cursor = "pointer";
+    atualizarGeo();
 }
 
 // Função para recusar a compra de uma estação
@@ -1889,9 +1902,9 @@ function comprarEstacao() {
 
 function naoUsarEstacao() {
     valorGenerico = 0;
-    atualizarGeo();
     document.getElementById("modal_utilizar_estacao").style.display = "none";
     blurBG.style.display = "none";
+    atualizarGeo();
 }
 
 // Função para usar a estação
@@ -1970,6 +1983,71 @@ function verificarSelado() {
         return true; // Indica que o jogador estava selado
     }
     return false;
+}
+
+// Função para verificar se um jogador faliu
+
+function verificarFalencia() {
+    jogadores.forEach((jogador) => {
+        if (jogador.geo < 0) {
+            exibirModalFalencia(jogador);
+            return;
+        }
+    });
+}
+
+// Função para exibir o modal de falência
+
+function exibirModalFalencia(jogador) {
+    const modal = document.getElementById("modal_falencia");
+    const containerPrincipal = document.getElementById("container_propriedades_falencia");
+    containerPrincipal.innerHTML = "";
+    let textoBotao;
+    if (idiomaAtual === "pt") {
+        document.getElementById("titulo_falido").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> Faliu!`;
+        textoBotao = "Vender";
+    } else {
+        document.getElementById("titulo_falido").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> went Bankrupt!`;
+        textoBotao = "Sell";
+    }
+    let propriedadesJogador = [];
+    for (let i = 1; i <= 39; i++) {
+        if (propriedades[i].dono === jogador.id) {
+            propriedadesJogador.push(propriedades[i]);
+        }
+    }
+    if (propriedadesJogador.length > 0) {
+        propriedadesJogador.forEach((prop) => {
+            const cardPropriedade = document.createElement("div");
+            cardPropriedade.className = "card-propriedade-falencia";
+            cardPropriedade.innerHTML =
+            `<h3>${textosP[idiomaAtual]["casa_" + prop.id]}</h3>
+            <div class="valor-geo-falencia">
+                <img src="imagens/outros/geo.png" class="geo-symbol">
+                <p>${prop.preco}</p>
+            </div>
+            <div class="container-botao-vender">
+                <button class="botao-primario" onclick="venderPropriedade(${jogador.id}, ${prop.id})">${textoBotao}</button>
+            </div>`;
+            containerPrincipal.appendChild(cardPropriedade);
+        });
+    }
+    modal.style.display = "block";
+    blurBG.style.display = "block";
+}
+
+// Função para vender uma propriedade durante falência
+
+function venderPropriedade(idJogador, idPropriedade) {
+    const jogador = jogadores[idJogador];
+    const propriedade = propriedades[idPropriedade];
+    propriedade.dono === null;
+    jogador.geo += propriedade.preco;
+    document.getElementById("casa_" + idPropriedade).style.border = "";
+    document.getElementById("modal_falencia").style.display = "none";
+    blurBG.style.display = "none";
+    atualizarPropriedades();
+    atualizarGeo();
 }
 
 atualizarCampos();

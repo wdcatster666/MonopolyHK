@@ -1296,3 +1296,117 @@ hr {
     font-weight: bold;
     margin-bottom: 20px;
 }
+
+/* MODAL DE FALÊNCIA */
+
+#modal_falencia {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    padding: 16px;
+    height: 80%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;    
+}
+
+#titulo_falido {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+#txt_venda_falido {
+    margin: 0 auto;
+    width: 90%;
+    font-size: 16px;
+    color: #414141;   
+}
+
+#container_propriedades_falencia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 10px 0;
+    height: 80%;
+    width: 80%;
+    background-color: #0A0A0A;
+    border-radius: 12px;
+    gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#container_propriedades_falencia::-webkit-scrollbar {
+    width: 6px;
+}
+
+#container_propriedades_falencia::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+
+#container_propriedades_falencia::-webkit-scrollbar-thumb {
+    background: #ff9f22;
+    border-radius: 4px;
+}
+
+#container_propriedades_falencia::-webkit-scrollbar-thumb:hover {
+    background: #d67d00;
+}
+
+.card-propriedade-falencia {
+    display: flex;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 16px;
+    height: 48px;
+    width: 92%;
+    background-color: #131313;
+    border: solid 2px #ff9f22;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.card-propriedade-falencia h3 {
+    font-size: 16px;
+    text-align: left;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.valor-geo-falencia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.container-botao-vender {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.container-botao-vender .botao-primario {
+    width: 90px;
+    height: 32px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
