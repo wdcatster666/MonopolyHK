@@ -1167,7 +1167,7 @@ function iniciarJogo() {
                          amuletos: 0,
                          selado: false,
                          falido: false,
-                         cor: "#17171b",
+                         cor: "#a0a0a3",
                          elementoPeao: null,
                          icone: "imagens/icones_jogadores/zote_icon.png" });
     } else {
@@ -1302,7 +1302,19 @@ function passarVez() {
     tirouDupla = 0;
     passarVez.className = "btn-passar-vez-inativo";
     rolarDados.style.cursor = "pointer";
-    jogadorAtual = (jogadorAtual + 1) % jogadores.length;
+    let tentativas = 0;
+    do {
+        jogadorAtual = (jogadorAtual + 1) % jogadores.length;
+        tentativas++;
+        if (tentativas > jogadores.length) {
+            if (idiomaAtual === "pt") {
+                exibirMensagem("Fim de jogo! Todos os jogadores faliram!");
+            } else {
+                exibirMensagem("Game over! All players went bankrupt!");
+            }
+            return;
+        }
+    } while (jogadores[jogadorAtual].falido);
     atualizarVez();
     verificarSelado();
 }
@@ -1989,7 +2001,7 @@ function verificarSelado() {
 
 function verificarFalencia() {
     jogadores.forEach((jogador) => {
-        if (jogador.geo < 0) {
+        if (jogador.geo < 0 && !jogador.falido) {
             exibirModalFalencia(jogador);
             return;
         }
@@ -2031,9 +2043,21 @@ function exibirModalFalencia(jogador) {
             </div>`;
             containerPrincipal.appendChild(cardPropriedade);
         });
+        modal.style.display = "block";
+        blurBG.style.display = "block";
+    } else {
+        jogador.falido = true;
+        if (jogador.elementoPeao) {
+            jogador.elementoPeao.remove();
+        }
+        if (idiomaAtual === "pt") {
+            exibirMensagem(`${jogador.nome} Faliu!`);
+        } else {
+            exibirMensagem(`${jogador.nome} went Bankrupt!`);
+        }
+        document.getElementById("passar_vez").className = "btn-passar-vez-ativo";
+        passarVez();
     }
-    modal.style.display = "block";
-    blurBG.style.display = "block";
 }
 
 // Função para vender uma propriedade durante falência
@@ -2041,7 +2065,7 @@ function exibirModalFalencia(jogador) {
 function venderPropriedade(idJogador, idPropriedade) {
     const jogador = jogadores[idJogador];
     const propriedade = propriedades[idPropriedade];
-    propriedade.dono === null;
+    propriedade.dono = null;
     jogador.geo += propriedade.preco;
     document.getElementById("casa_" + idPropriedade).style.border = "";
     document.getElementById("modal_falencia").style.display = "none";

@@ -203,8 +203,8 @@ hr {
 }
 
 #nome_p4 {
-    background-color: #4f5469;
-    border-color: #17171b;
+    background-color: #a7acbe;
+    border-color: #a0a0a3;
 }
 
 .usar-dados {
@@ -290,7 +290,7 @@ hr {
 
 .casa {
     position: relative;
-    border: 1px solid #797065;
+    border: 1px solid #262626;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -726,7 +726,7 @@ hr {
 }
 
 .zote {
-    border: solid 2px #17171b;
+    border: solid 2px #a0a0a3;
 }
 
 /* MODAIS */
