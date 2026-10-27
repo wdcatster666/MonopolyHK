@@ -1410,3 +1410,43 @@ hr {
     font-size: 14px;
     flex-shrink: 0;
 }
+
+/* MODAL DA PRISÃO */
+
+#modal_prisao {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 60%;
+    width: 40%;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border: solid 6px #101010;
+    border-radius: 32px;
+    background-color: #131313;
+    box-shadow: rgba(250, 138, 33, 0.176) 0px 0px 48px 0px;
+    z-index: 9998;    
+}
+
+#modal_prisao .container-dados {
+    margin: 24px;
+}
+
+#titulo_preso {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;    
+}
+
+#rodada_prisao, #pergunta_prisao {
+    margin: 0 auto;
+    margin-bottom: 4px;
+    width: 90%;
+    font-size: 16px;    
+}

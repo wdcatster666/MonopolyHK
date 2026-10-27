@@ -11,6 +11,7 @@ let totalP2 = 0;
 let valorGenerico = 0;
 let numCarta;
 let carta;
+let tentativas = [];
 
 // Declaração dos textos nos dois idiomas
 
@@ -56,7 +57,10 @@ const textosG = {
         titulo_carta: "Carta de Exploração",
         btn_rejeitar_ferrao: "Não Aprimorar",
         btn_comprar_ferrao: "Aprimorar",
-        txt_venda_falido: "Venda propriedades para continuar no jogo!"
+        txt_venda_falido: "Venda propriedades para continuar no jogo!",
+        pergunta_prisao: "Deseja pagar 500 Geo para sair imediatamente, ou deseja tentar a sorte nos dados?",
+        btn_pagar_prisao: "Pagar",
+        btn_dados_prisao: "Rolar os Dados"
     },
 
     // Textos gerais em Inglês
@@ -99,7 +103,10 @@ const textosG = {
         titulo_carta: "Exploration Card",
         btn_rejeitar_ferrao: "Do Not Upgrade",
         btn_comprar_ferrao: "Upgrade",
-        txt_venda_falido: "Sell properties to continue on the game!"
+        txt_venda_falido: "Sell properties to continue on the game!",
+        pergunta_prisao: "Do you want to pay 500 Geo to get imediatelly free, or do you want to try your luck rolling the dice?",
+        btn_pagar_prisao: "Pay",
+        btn_dados_prisao: "Roll the Dice"
     }
 }
 
@@ -1039,6 +1046,9 @@ function atualizarInterface() {
     document.getElementById("btn_rejeitar_ferrao").textContent = tg.btn_rejeitar_ferrao;
     document.getElementById("btn_comprar_ferrao").textContent = tg.btn_comprar_ferrao;
     document.getElementById("txt_venda_falido").textContent = tg.txt_venda_falido;
+    document.getElementById("pergunta_prisao").textContent = tg.pergunta_prisao;
+    document.getElementById("btn_pagar_prisao").textContent = tg.btn_pagar_prisao;
+    document.getElementById("btn_dados_prisao").textContent = tg.btn_dados_prisao;
 
     // Nomes das propriedades
 
@@ -1176,6 +1186,7 @@ function iniciarJogo() {
     for (let i = 0; i < jogadores.length; i++) {
         document.getElementById(`nome_jogador_${i}`).textContent = jogadores[i].nome;
         document.getElementById(`qnt_geo_${i}`).textContent = jogadores[i].geo;
+        tentativas.push(0);
     }
     menu.style.display = "none";
     blurBG.style.display = "none";
@@ -1924,7 +1935,13 @@ function naoUsarEstacao() {
 function usarEstacao() {
     const jogador = jogadores[jogadorAtual];
     const casaAtual = propriedades[jogador.posicao];
+    const dados = document.getElementById("rolar_dados");
+    let dupla = false;
     if (jogador.geo >= valorGenerico) {
+        if (dados.style.cursor === "pointer") {
+            dupla = true;
+        }
+        dados.style.cursor = "not-allowed";
         jogador.geo -= valorGenerico;
         jogadores[casaAtual.dono].geo += valorGenerico;
         valorGenerico = 0;
@@ -1958,6 +1975,9 @@ function usarEstacao() {
             exibirMensagem("You don't have enough Geo!");
         }    
     }
+    if (dupla) {
+        dados.style.cursor = "pointer";
+    }
 }
 
 // Função para selar um jogador
@@ -1978,23 +1998,72 @@ function selarJogador(jogador) {
 
 function verificarSelado() {
     const jogador = jogadores[jogadorAtual];
+    const modal = document.getElementById("modal_prisao");
     if (jogador.selado === true) {
         if (idiomaAtual === "pt") {
-            exibirMensagem(`${jogador.nome} está selado e perdeu o turno! (Modo temporário)`);
+            document.getElementById("titulo_preso").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> está na Prisão!`;
+            document.getElementById("rodada_prisao").textContent = `Você está na prisão há ${tentativas[jogador.id]} rodada(s)`;
         } else {
-            exibirMensagem(`${jogador.nome} is sealed and lost the turn! (Temporary mode)`);
+            document.getElementById("titulo_preso").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> is at Jail!`;
+            document.getElementById("rodada_prisao").textContent = `You've been at jail for ${tentativas[jogador.id]} round(s)`;
         }
-        
-        // Libera o jogador para o próximo turno (remova isso quando implementar a prisão oficial)
-        jogador.selado = false;
-        
-        // Ajusta os botões para o próximo passar a vez corretamente
-        document.getElementById("passar_vez").className = "btn-passar-vez-ativo";
-        document.getElementById("rolar_dados").style.cursor = "not-allowed";
-        
-        return true; // Indica que o jogador estava selado
+        modal.style.display = "block";
+        blurBG.style.display = "block";  
     }
-    return false;
+}
+
+// Função para um jogador pagar para sair da prisão
+
+function pagarPrisao() {
+    const jogador = jogadores[jogadorAtual];
+    const modal = document.getElementById("modal_prisao");
+    jogador.geo -= 500;
+    jogador.selado = false;
+    tentativas[jogador.id] = 0;
+    modal.style.display = "none";
+    blurBG.style.display = "none";
+    atualizarGeo();
+}
+
+// Função para um jogador tentar sair da prisão lançando os dados
+
+function lancarDadosPrisao() {
+    const jogador = jogadores[jogadorAtual];
+    const rolarDados = document.getElementById("btn_dados_prisao");
+    const pagar = document.getElementById("btn_pagar_prisao");
+    if (rolarDados.style.cursor === "not-allowed") return;
+    rolarDados.style.cursor = "not-allowed";
+    pagar.style.cursor = "not-allowed";
+    const d1 = document.getElementById("dado_1pr");
+    const d2 = document.getElementById("dado_2pr")
+    d1.classList.add("rolando");
+    d2.classList.add("rolando");
+    setTimeout(() => {
+        d1.classList.remove("rolando");
+        d2.classList.remove("rolando");
+        const dado1 = Math.floor(Math.random() * 6) + 1;
+        const dado2 = Math.floor(Math.random() * 6) + 1;  
+        d1.textContent = dado1;
+        d2.textContent = dado2;
+        setTimeout(() => {
+            if (dado1 === dado2) {
+                jogador.selado = false;
+                tentativas[jogador.id] = 0;
+            } else {
+                tentativas[jogador.id]++;
+                if (tentativas[jogador.id] >= 3) {
+                    pagarPrisao();
+                } else {
+                    document.getElementById("passar_vez").className = "btn-passar-vez-ativo";
+                    passarVez();
+                }
+            }
+            document.getElementById("modal_prisao").style.display = "none";
+            blurBG.style.display = "none";
+            rolarDados.style.cursor = "pointer";
+            pagar.style.cursor = "pointer";
+        }, 1500);
+    }, 500);    
 }
 
 // Função para verificar se um jogador faliu
