@@ -729,6 +729,64 @@ hr {
     border: solid 2px #a0a0a3;
 }
 
+/* HISTÓRICO DE AÇÕES */
+
+.container-historico {
+    position: fixed;
+    bottom: 2%;
+    margin-left: 0.3%;
+    padding: 8px;
+    height: 45%;
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    background-color: #12151f;
+    border: solid 4px #0a0f1f;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center; 
+}
+
+#titulo_historico {
+    margin: 0;
+    margin-bottom: 8px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.caixa-historico {
+    height: 90%;
+    width: 95%;
+    padding: 8px;
+    background-color: #090a0e;
+    border-radius: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.caixa-historico::-webkit-scrollbar {
+    width: 8px;
+}
+
+.caixa-historico::-webkit-scrollbar-track {
+    background: #0e1018;
+    border-radius: 4px;
+}
+
+.caixa-historico::-webkit-scrollbar-thumb {
+    background: #283049;
+    border-radius: 4px;
+}
+
+.caixa-historico::-webkit-scrollbar-thumb:hover {
+    background: #1a1f30;
+}
+
+.mensagem-historico {
+    margin: 4px;
+    font-size: 12px;
+}
+
 /* MODAIS */
 
 /* MODAL DE MENSAGENS */

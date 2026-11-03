@@ -8,7 +8,8 @@ let jogadorAtual = 0;
 let tirouDupla = 0;
 let totalP1 = 0;
 let totalP2 = 0;
-let valorGenerico = 0;
+let valorGenericoA = 0;
+let valorGenericoB = 0;
 let numCarta;
 let carta;
 let tentativas = [];
@@ -60,7 +61,8 @@ const textosG = {
         txt_venda_falido: "Venda propriedades para continuar no jogo!",
         pergunta_prisao: "Deseja pagar 500 Geo para sair imediatamente, ou deseja tentar a sorte nos dados?",
         btn_pagar_prisao: "Pagar",
-        btn_dados_prisao: "Rolar os Dados"
+        btn_dados_prisao: "Rolar os Dados",
+        titulo_historico: "Histórico de Ações"
     },
 
     // Textos gerais em Inglês
@@ -106,7 +108,8 @@ const textosG = {
         txt_venda_falido: "Sell properties to continue on the game!",
         pergunta_prisao: "Do you want to pay 500 Geo to get imediatelly free, or do you want to try your luck rolling the dice?",
         btn_pagar_prisao: "Pay",
-        btn_dados_prisao: "Roll the Dice"
+        btn_dados_prisao: "Roll the Dice",
+        titulo_historico: "Actions History"
     }
 }
 
@@ -1049,6 +1052,7 @@ function atualizarInterface() {
     document.getElementById("pergunta_prisao").textContent = tg.pergunta_prisao;
     document.getElementById("btn_pagar_prisao").textContent = tg.btn_pagar_prisao;
     document.getElementById("btn_dados_prisao").textContent = tg.btn_dados_prisao;
+    document.getElementById("titulo_historico").textContent = tg.titulo_historico;
 
     // Nomes das propriedades
 
@@ -1187,6 +1191,11 @@ function iniciarJogo() {
         document.getElementById(`nome_jogador_${i}`).textContent = jogadores[i].nome;
         document.getElementById(`qnt_geo_${i}`).textContent = jogadores[i].geo;
         tentativas.push(0);
+    }
+    if (idiomaAtual === "pt") {
+        document.getElementById("msg_inicial").textContent = `Jogo iniciado com ${jogadores.length} jogadores!`;
+    } else {
+        document.getElementById("msg_inicial").textContent = `Game started with ${jogadores.length} players!`;
     }
     menu.style.display = "none";
     blurBG.style.display = "none";
@@ -1330,6 +1339,17 @@ function passarVez() {
     verificarSelado();
 }
 
+// Função para exibir mensagem no histórico
+
+function fazerRegistro(msg) {
+    const container = document.getElementById("container_historico");
+    const registro = document.createElement("p");
+    registro.className = "mensagem-historico";
+    registro.innerHTML = msg;
+    container.appendChild(registro);
+    container.scrollTop = container.scrollHeight;
+}
+
 // Função para exibir mensagens
 
 function exibirMensagem(msg) {
@@ -1381,6 +1401,11 @@ function executarAcao(jogador) {
     // Casas do tipo "Propriedade"
 
     if (casaAtual.tipo === "propriedade") {
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> parou na propriedade ${textosP[idiomaAtual]["casa_" + casaAtual.id]}`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> landed at the property ${textosP[idiomaAtual]["casa_" + casaAtual.id]}`);  
+        }
         if (casaAtual.dono === null) {
             if (idiomaAtual === "pt") {
                 document.getElementById("pergunta_comprar").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
@@ -1407,6 +1432,11 @@ function executarAcao(jogador) {
     // Casas do tipo "Companhia"
 
     else if (casaAtual.tipo === "companhia") {
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> parou no ponto turístico ${textosP[idiomaAtual]["casa_" + casaAtual.id]}`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> landed at the tourist attraction ${textosP[idiomaAtual]["casa_" + casaAtual.id]}`);  
+        }
         if (casaAtual.dono === null) {
             if (idiomaAtual === "pt") {
                 document.getElementById("pergunta_comprar_companhia").textContent = `Deseja comprar ${textosP["pt"]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo?`;
@@ -1433,6 +1463,11 @@ function executarAcao(jogador) {
 
     else if (casaAtual.tipo === "estacao") {
         if (casaAtual.dono === null) {
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> parou numa Estação de Besouro sem dono`);
+            } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> landed at a Stag Station with no owner`);  
+            }
             document.getElementById("modal_compra_estacoes").style.display = "block";
             blurBG.style.display = "block";
         } else {
@@ -1442,10 +1477,12 @@ function executarAcao(jogador) {
                 document.getElementById("titulo_proprietario_estacao").innerHTML = `Estação de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
                 document.getElementById("txt_aluguel_estacao").textContent = "Você é o dono da Estação";
                 document.getElementById("txt_custo_uso_estacao").textContent = "Como você é o dono, pode usá-la de graça!";
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> parou em sua própria Estação de Besouro`);
             } else {
                 document.getElementById("titulo_proprietario_estacao").innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}'s</span> Station`;
                 document.getElementById("txt_aluguel_estacao").textContent = "You are the Station owner";
                 document.getElementById("txt_custo_uso_estacao").textContent = "Since you're the owner, you can use it for free!";   
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> landed at their own Stag Station`);
             }
             document.getElementById("simbolo_geo1").style.display = "none";
             document.getElementById("valor_aluguel_estacao").style.display = "none";
@@ -1460,15 +1497,16 @@ function executarAcao(jogador) {
                 }
                 aluguel = casaAtual.alugueis[qntEstacoes];
                 custoUso = casaAtual.custoUso[qntEstacoes];
-                valorGenerico = custoUso;
-                jogador.geo -= aluguel;
-                jogadores[casaAtual.dono].geo += aluguel;
+                valorGenericoA = aluguel;
+                valorGenericoB = custoUso;
                 if (idiomaAtual === "pt") {
                     document.getElementById("txt_aluguel_estacao").textContent = "Valor do aluguel: ";
                     document.getElementById("txt_custo_uso_estacao").textContent = "Custo de Uso da Estação: ";
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> parou numa Estação de Besouro de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`);
                 } else {
                     document.getElementById("txt_aluguel_estacao").textContent = "Rent Value: ";
-                    document.getElementById("txt_custo_uso_estacao").textContent = "Station's Use Cost: ";   
+                    document.getElementById("txt_custo_uso_estacao").textContent = "Station's Use Cost: ";
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> landed at a Stag Station from <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`);  
                 }
                 document.getElementById("valor_aluguel_estacao").textContent = aluguel;
                 document.getElementById("valor_uso_estacao").textContent = custoUso;
@@ -1493,8 +1531,10 @@ function executarAcao(jogador) {
         let texto;
         if (idiomaAtual === "pt") {
             texto = carta.textoPt;
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pegou uma Carta de Exploração`);
         } else {
             texto = carta.textoEn;
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> drew an Exploration Card`);
         }
 
         // Cartas do tipo "Movimento Especial"
@@ -1549,8 +1589,18 @@ function executarAcao(jogador) {
         else if (carta.tipo === "geo") {
             if (carta.valor > 0) {
                 simbolo.src = "imagens/icones_cartas/icone_geo_ganho.png";
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> recebeu ${carta.valor} Geo`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> received ${carta.valor} Geo`);  
+                }
             } else {
                 simbolo.src = "imagens/icones_cartas/icone_geo_perca.png";
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> perdeu ${carta.valor * -1} Geo`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> lost ${carta.valor * -1} Geo`);  
+                }
             }
             jogador.geo += carta.valor;
         }
@@ -1559,6 +1609,11 @@ function executarAcao(jogador) {
 
         else if (carta.tipo === "geoJogadores") {
             if (carta.acao === "pagar") {
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pagou ${carta.valor} Geo para cada jogador`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> paid ${carta.valor} Geo for each player`);  
+                }
                 simbolo.src = "imagens/icones_cartas/icone_geo_perca.png";
                 jogadores.forEach((outroJogador) => {
                     if (outroJogador.id != jogadorAtual && !outroJogador.falido) {
@@ -1567,6 +1622,11 @@ function executarAcao(jogador) {
                     }
                 });
             } else {
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> recebeu ${carta.valor} Geo de cada jogador`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> received ${carta.valor} Geo from each player`);  
+                }
                 simbolo.src = "imagens/icones_cartas/icone_geo_ganho.png";
                 jogadores.forEach((outroJogador) => {
                     if (outroJogador.id != jogadorAtual && !outroJogador.falido) {
@@ -1588,6 +1648,11 @@ function executarAcao(jogador) {
 
     else if (casaAtual.tipo === "sejaSelado") {
         selarJogador(jogador);
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> foi direto para o Templo`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> went straight to the Temple`);
+        }
     }
 }
 
@@ -1603,7 +1668,27 @@ function executarCarta() {
     if (carta.tipo === "movimentoEspecial") {
         if (carta.id === 1) {
             selarJogador(jogador);
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> foi direto para o Templo`);
+            } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> went straight to the Temple`);
+            }
         } else {
+            if (carta.id === 0) {
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> foi direto para a Passagem do Rei`);
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> recebeu 2000 Geo por passar pela Passagem do Rei`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> went straight to King's Pass`);
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> received 2000 Geo for going through King's Pass`);
+                }
+            } else {
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> foi direto para as Fontes Termais`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> went straight to the Hot Springs`);
+                }
+            }
             moverPeao(jogador.elementoPeao, carta.destino);
             jogador.posicao = carta.destino;
         }
@@ -1626,6 +1711,11 @@ function executarCarta() {
         if (!carta.tipoMov) {
             movimentoPeao(jogadorAtual, carta.passos);
         } else {
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> deve jogar novamente`);
+            } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> must play again`);
+            }
             document.getElementById("rolar_dados").style.cursor = "pointer";
             document.getElementById("passar_vez").className = "btn-passar-vez-inativo";  
         }
@@ -1639,6 +1729,11 @@ function executarCarta() {
 // Função para não aprimorar o ferrão
 
 function rejeitarFerrao() {
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decidiu não aprimorar o seu ferrão`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decided not to upgrade their nail`);
+    }
     document.getElementById("modal_carta_ferrao").style.display = "none";
     blurBG.style.display = "none";    
 }
@@ -1649,6 +1744,11 @@ function comprarFerrao() {
     const jogador = jogadores[jogadorAtual];
     let precoFerrao = cartasExploracao[10].precos[jogador.ferrao]
     if (jogador.geo >= precoFerrao) {
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> aprimorou seu ${cartasExploracao[10].nomesPt[jogador.ferrao - 1]} para ${cartasExploracao[10].nomesPt[jogador.ferrao]} por ${precoFerrao} Geo`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> upgraded their ${cartasExploracao[10].nomesPt[jogador.ferrao - 1]} to ${cartasExploracao[10].nomesPt[jogador.ferrao]} for ${precoFerrao} Geo`);
+        }
         jogador.geo -= precoFerrao;
         jogador.ferrao++;
         atualizarGeo();
@@ -1666,8 +1766,14 @@ function comprarFerrao() {
 // Função para recusar a compra da propriedade
 
 function passarCompra() {
+    const jogador = jogadores[jogadorAtual];
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> decidiu não comprar ${textosP[idiomaAtual]["casa_" + propriedades[jogador.posicao].id]}`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> decided not to buy ${textosP[idiomaAtual]["casa_" + propriedades[jogador.posicao].id]}`);
+    }
     document.getElementById("modal_compra_propriedades").style.display = "none";
-    blurBG.style.display = "none";    
+    blurBG.style.display = "none";   
 }
 
 // Função para comprar a propriedade
@@ -1678,6 +1784,11 @@ function comprarPropriedade() {
     if (jogador.geo >= casaAtual.preco) {
         casaAtual.dono = jogadorAtual;
         jogador.geo -= casaAtual.preco;
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> comprou ${textosP[idiomaAtual]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> bought ${textosP[idiomaAtual]["casa_" + casaAtual.id]} for ${casaAtual.preco} Geo`);
+        }
         atualizarGeo();
         atualizarPropriedades();
         document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
@@ -1696,9 +1807,12 @@ function comprarPropriedade() {
 
 function batalhar() {
     const jogador = jogadores[jogadorAtual];
+    const dono = jogadores[propriedades[jogador.posicao].dono];
     if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> desafiou <span style="color: ${dono.cor};">${dono.nome}</span> para uma batalha!`);
         document.getElementById("jogador_lanca_dados").innerHTML = `Vez de <span style="color: ${jogador.cor};">${jogador.nome}</span> lançar os dados`;
     } else {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> challenged <span style="color: ${dono.cor};">${dono.nome}</span> for a battle!`);
         document.getElementById("jogador_lanca_dados").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}'s</span> turn to roll the dice`;    
     }
     document.getElementById("modal_batalha_aluguel").style.display = "block";
@@ -1714,6 +1828,7 @@ function lancarDadosBatalha() {
     const txtPerdedor = document.getElementById("anuncio_perdedor");
     const txtP2 = document.getElementById("jogador_lanca_dados");
     const rolarDados = document.getElementById("lancar_dados");
+    let registro;
     if (totalP1 === 0) {
         if (rolarDados.style.cursor === "not-allowed") return;
         rolarDados.style.cursor = "not-allowed";
@@ -1760,9 +1875,11 @@ function lancarDadosBatalha() {
             if (totalP1 > totalP2) {
                 valorAPagar = casaAtual.alugueis[casaAtual.casasConstruidas] * 0.5;
                 if (idiomaAtual === "pt") {
+                    registro = `<span style="color: ${jogador.cor};">${jogador.nome}</span> venceu a batalha e deve receber ${valorAPagar} Geo de <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
                     txtVencedor.innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> Venceu!`;
                     txtPerdedor.textContent = `${jogadores[casaAtual.dono].nome} deve pagar ${valorAPagar} Geo`;
                 } else {
+                    registro = `<span style="color: ${jogador.cor};">${jogador.nome}</span> won the battle and must receive ${valorAPagar} Geo from <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`;
                     txtVencedor.innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span> Won!`;
                     txtPerdedor.textContent = `${jogadores[casaAtual.dono].nome} must pay ${valorAPagar} Geo`;
                 }
@@ -1771,9 +1888,11 @@ function lancarDadosBatalha() {
             } else {
                 valorAPagar = casaAtual.alugueis[casaAtual.casasConstruidas] * 2;
                 if (idiomaAtual === "pt") {
+                    registro = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> venceu a batalha e deve receber ${valorAPagar} Geo de <span style="color: ${jogador.cor};">${jogador.nome}</span>`;
                     txtVencedor.innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> Venceu!`;
                     txtPerdedor.textContent = `${jogador.nome} deve pagar ${valorAPagar} Geo`;
                 } else {
+                    registro = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> won the battle and must receive ${valorAPagar} Geo from <span style="color: ${jogador.cor};">${jogador.nome}</span>`;
                     txtVencedor.innerHTML = `<span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span> Won!`;
                     txtPerdedor.textContent = `${jogador.nome} must pay ${valorAPagar} Geo`;
                 }
@@ -1781,6 +1900,7 @@ function lancarDadosBatalha() {
                 jogadores[casaAtual.dono].geo += valorAPagar;
             }
             setTimeout(() => {
+                fazerRegistro(registro);
                 document.getElementById("modal_batalha_aluguel_result").style.display = "block";
                 xBlurBG.style.display = "block";
             }, 1500)
@@ -1811,6 +1931,11 @@ function pagarAluguel() {
     const valorAluguel = casaAtual.alugueis[casaAtual.casasConstruidas];
     jogador.geo -= valorAluguel;
     jogadores[dono].geo += valorAluguel;
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pagou ${valorAluguel} Geo de aluguel para <span style="color: ${jogadores[dono].cor};">${jogadores[dono].nome}</span>`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> paid ${valorAluguel} Geo for <span style="color: ${jogadores[dono].cor};">${jogadores[dono].nome}</span>'s rent`);  
+    }
     document.getElementById("modal_pagar_aluguel").style.display = "none";
     blurBG.style.display = "none";
     atualizarGeo();
@@ -1819,6 +1944,11 @@ function pagarAluguel() {
 // Função para passar a compra da companhia
 
 function passarCompanhia() {
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decidiu não comprar ${textosP[idiomaAtual]["casa_" + propriedades[jogadores[jogadorAtual].posicao].id]}`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decided not to buy ${textosP[idiomaAtual]["casa_" + propriedades[jogadores[jogadorAtual].posicao].id]}`);
+    }
     document.getElementById("modal_compra_companhias").style.display = "none";
     blurBG.style.display = "none";   
 }
@@ -1833,6 +1963,11 @@ function comprarCompanhia() {
         jogador.geo -= casaAtual.preco;
         atualizarGeo();
         atualizarPropriedades();
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> comprou ${textosP[idiomaAtual]["casa_" + casaAtual.id]} por ${casaAtual.preco} Geo`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> bought ${textosP[idiomaAtual]["casa_" + casaAtual.id]} for ${casaAtual.preco} Geo`);
+        }
         document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
         document.getElementById("modal_compra_companhias").style.display = "none";
         blurBG.style.display = "none";
@@ -1871,8 +2006,10 @@ function pagarCompanhia() {
             jogador.geo -= valorAPagar;
             jogadores[dono].geo += valorAPagar;
             if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> deve pagar ${valorAPagar} Geo para <span style="color: ${jogadores[dono].cor};">${jogadores[dono].nome}</span>`);
                 document.getElementById("resultado_pagar_companhia").textContent = `${jogador.nome} deve pagar ${valorAPagar} Geo para ${jogadores[dono].nome}`;
             } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> must pay ${valorAPagar} Geo to <span style="color: ${jogadores[dono].cor};">${jogadores[dono].nome}</span>`);
                 document.getElementById("resultado_pagar_companhia").textContent = `${jogador.nome} must pay ${valorAPagar} Geo to ${jogadores[dono].nome}`;
             }
             document.getElementById("modal_pagar_companhia_result").style.display = "block";
@@ -1895,6 +2032,11 @@ function fecharValorCompanhia() {
 // Função para recusar a compra de uma estação
 
 function passarEstacao() {
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decidiu não comprar a Estação de Besouro`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decided not to buy the Stag Station`);
+    }
     document.getElementById("modal_compra_estacoes").style.display = "none";
     blurBG.style.display = "none";
 }
@@ -1909,6 +2051,11 @@ function comprarEstacao() {
         jogador.geo -= casaAtual.preco;
         atualizarGeo();
         atualizarPropriedades();
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> comprou a Estação de Besouro por ${casaAtual.preco} Geo`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> bought the Stag Station for ${casaAtual.preco} Geo`);
+        }
         document.getElementById("casa_" + casaAtual.id).style.border = `2px solid ${jogador.cor}`;
         document.getElementById("modal_compra_estacoes").style.display = "none";
         blurBG.style.display = "none";
@@ -1924,7 +2071,23 @@ function comprarEstacao() {
 // Função para não usar a estação
 
 function naoUsarEstacao() {
-    valorGenerico = 0;
+    if (propriedades[jogadores[jogadorAtual].posicao].dono != jogadores[jogadorAtual].id) {
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> pagou ${valorGenericoA} Geo de aluguel da estação para <span style="color: ${jogadores[propriedades[jogadores[jogadorAtual].posicao].dono].cor};">${jogadores[propriedades[jogadores[jogadorAtual].posicao].dono].nome}</span>`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> paid ${valorGenericoA} Geo for the station's rent to <span style="color: ${jogadores[propriedades[jogadores[jogadorAtual].posicao].dono].cor};">${jogadores[propriedades[jogadores[jogadorAtual].posicao].dono].nome}</span>`);
+        }
+    } else {
+        if (idiomaAtual === "pt") {
+            fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decidiu não usar sua própria estação`);
+        } else {
+            fazerRegistro(`<span style="color: ${jogadores[jogadorAtual].cor};">${jogadores[jogadorAtual].nome}</span> decided not to use their own station`);
+        }
+    }
+    jogadores[jogadorAtual].geo -= valorGenericoA;
+    jogadores[propriedades[jogadores[jogadorAtual].posicao].dono].geo += valorGenericoA;
+    valorGenericoA = 0;
+    valorGenericoB = 0;
     document.getElementById("modal_utilizar_estacao").style.display = "none";
     blurBG.style.display = "none";
     atualizarGeo();
@@ -1937,15 +2100,33 @@ function usarEstacao() {
     const casaAtual = propriedades[jogador.posicao];
     const dados = document.getElementById("rolar_dados");
     let dupla = false;
-    if (jogador.geo >= valorGenerico) {
+    if (jogador.geo >= valorGenericoB) {
         if (dados.style.cursor === "pointer") {
             dupla = true;
         }
         dados.style.cursor = "not-allowed";
-        jogador.geo -= valorGenerico;
-        jogadores[casaAtual.dono].geo += valorGenerico;
-        valorGenerico = 0;
+        jogador.geo -= valorGenericoA;
+        jogador.geo -= valorGenericoB;
+        jogadores[casaAtual.dono].geo += valorGenericoA;
+        jogadores[casaAtual.dono].geo += valorGenericoB;
         atualizarGeo();
+        if (casaAtual.dono != jogador.id) {
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pagou ${valorGenericoA} Geo de aluguel da estação para <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`);
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pagou ${valorGenericoB} Geo a mais para utilizar a estação`);
+            } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> paid ${valorGenericoA} Geo for the station's rent to <span style="color: ${jogadores[casaAtual.dono].cor};">${jogadores[casaAtual.dono].nome}</span>`);
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> paid ${valorGenericoB} more Geo to use the station`);
+            }
+        } else {
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> usou a sua própria Estação de Besouro`);
+            } else {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> used their own Stag Station`);
+            }
+        }
+        valorGenericoA = 0;
+        valorGenericoB = 0;
         const passarVez = document.getElementById("passar_vez");
         passarVez.className = "btn-passar-vez-inativo";
         document.getElementById("modal_utilizar_estacao").style.display = "none";
@@ -2020,6 +2201,11 @@ function pagarPrisao() {
     jogador.geo -= 500;
     jogador.selado = false;
     tentativas[jogador.id] = 0;
+    if (idiomaAtual === "pt") {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> pagou 500 Geo para sair do Templo`);
+    } else {
+        fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> paid 500 Geo to get out of the Temple`);
+    }
     modal.style.display = "none";
     blurBG.style.display = "none";
     atualizarGeo();
@@ -2049,8 +2235,18 @@ function lancarDadosPrisao() {
             if (dado1 === dado2) {
                 jogador.selado = false;
                 tentativas[jogador.id] = 0;
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> tirou uma dupla e saiu da prisão!`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> got a double on the dice and left the Temple!`);
+                }
             } else {
                 tentativas[jogador.id]++;
+                if (idiomaAtual === "pt") {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> não conseguiu tirar uma dupla e continua no templo`);
+                } else {
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> didn't get a double and stays in the Temple`);
+                }
                 if (tentativas[jogador.id] >= 3) {
                     pagarPrisao();
                 } else {
