@@ -1210,11 +1210,15 @@ function atualizarVez() {
     if (jogadores.length === 0) return;
     const jogadorDaVez = jogadores[jogadorAtual];
     const vez_de_jogador = document.getElementById("vez_de_jogador");
+    const propriedadesJogador = document.getElementById("titulo_propriedades");
     if (idiomaAtual === "pt") {
         vez_de_jogador.innerHTML = `Turno de <span style="color: ${jogadorDaVez.cor};">${jogadorDaVez.nome}</span>`;
+        propriedadesJogador.innerHTML = `Propriedades de <span style="color: ${jogadorDaVez.cor};">${jogadorDaVez.nome}</span>:`;
     } else {
         vez_de_jogador.innerHTML = `<span style="color: ${jogadorDaVez.cor};">${jogadorDaVez.nome}'s</span> Turn`;
+        propriedadesJogador.innerHTML = `<span style="color: ${jogadorDaVez.cor};">${jogadorDaVez.nome}</span>'s Properties:`;
     }
+    adicionarPropriedade();
 }
 
 // Função para carregar os peões na tela
@@ -1375,6 +1379,71 @@ function atualizarGeo() {
     verificarFalencia();
 }
 
+// Função para exibir as propriedades do jogador atual
+
+function adicionarPropriedade() {
+    const jogador = jogadores[jogadorAtual];
+    const container = document.getElementById("container_propriedades");
+    container.innerHTML = '<h1 id="titulo_propriedades"></h1>';
+    if (idiomaAtual === "pt") {
+        document.getElementById("titulo_propriedades").innerHTML = `Propriedades de <span style="color: ${jogador.cor};">${jogador.nome}</span>:`;
+    } else {
+        document.getElementById("titulo_propriedades").innerHTML = `<span style="color: ${jogador.cor};">${jogador.nome}</span>'s Properties:`;
+    }
+    for (let i = 1; i <= 39; i++) {
+        if (propriedades[i].dono === jogador.id) {
+            const propriedade = document.createElement("div");
+            let corGrupo;
+            let casas;
+            let aluguel;
+            let texto;
+            let botao;
+            propriedade.className = "card-propriedade";
+            if (propriedades[i].grupo) {
+                corGrupo = propriedades[i].grupo;
+                casas = propriedades[i].casasConstruidas;
+                aluguel = propriedades[i].alugueis[casas];
+            } else {
+                if (propriedades[i].tipo === "estacao") {
+                    let qntEstacoes = -1;
+                    for (let x = 5; x <= 35; x += 10) {
+                        if (propriedades[x].dono === jogador.id) {
+                            qntEstacoes++;
+                        }
+                    }
+                    aluguel = propriedades[i].alugueis[qntEstacoes];
+                } else {
+                    aluguel = propriedades[i].aluguelBase;
+                }
+                corGrupo = "nenhuma";
+                casas = "--";
+            }
+            if (idiomaAtual === "pt") {
+                texto = "Casas Construídas: ";
+                botao = "Construir Casa"
+            } else {
+                texto = "Houses Built: ";
+                botao = "Build a House";
+            }
+            propriedade.innerHTML = `<div class="info-propriedade">
+                                         <div class="circulo-cor-prop-${corGrupo}"></div>
+                                         <div class="prop-info-gerais">
+                                             <div class="flex-propriedade">
+                                                 <p class="nome-propriedade-jogador">${textosP[idiomaAtual]["casa_"+i]}</p>
+                                                 <p class="qnt-casas">${texto}${casas}</p>
+                                             </div>
+                                             <div class="geo-info-prop">
+                                                 <img class="geo-symbol" src="imagens/outros/geo.png">
+                                                 <p class="valor-aluguel-atual">${aluguel}</p>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <button class="botao-primario" onclick="construirCasa(${i})" style="display: none;">${botao}</button>`;
+            container.appendChild(propriedade); 
+        }
+    }
+}
+
 // Função para atualizar a quantidade de propriedades
 
 function atualizarPropriedades() {
@@ -1390,7 +1459,8 @@ function atualizarPropriedades() {
         } else {
             document.getElementById("qnt_propriedades_" + i).textContent = `${qntProp} properties`;    
         }
-    }       
+    }
+    adicionarPropriedade();     
 }
 
 // Função para executar a ação da casa
