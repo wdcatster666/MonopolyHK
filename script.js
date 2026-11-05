@@ -1438,10 +1438,11 @@ function adicionarPropriedade() {
                                              </div>
                                          </div>
                                      </div>
-                                     <button class="botao-primario" onclick="construirCasa(${i})" style="display: none;">${botao}</button>`;
-            container.appendChild(propriedade); 
+                                     <button class="botao-primario" id="btn_construir_${i}" onclick="construirCasa(${i})" style="display: none;">${botao} (${propriedades[i].precoConstrucao} Geo)</button>`;
+            container.appendChild(propriedade);
         }
     }
+    verificarMonopolio();
 }
 
 // Função para atualizar a quantidade de propriedades
@@ -1461,6 +1462,61 @@ function atualizarPropriedades() {
         }
     }
     adicionarPropriedade();     
+}
+
+// Função para verificar se um jogador possui algum monopólio
+
+function verificarMonopolio() {
+    const jogador = jogadores[jogadorAtual];
+    const grupos = ["cinza", "verde", "azul", "rosa", "preto", "branco", "roxo", "amarelo"];
+    for (let grupoAtual = 0; grupoAtual < grupos.length; grupoAtual++) {
+        let propGrupo = [];
+        for (let i = 1; i <= 39; i++) {
+            if (propriedades[i].grupo === grupos[grupoAtual]) {
+                propGrupo.push(i);
+            }
+        }
+        if (propGrupo.length === 3) {
+            if (propriedades[propGrupo[0]].dono === jogador.id &&
+                propriedades[propGrupo[1]].dono === jogador.id &&
+                propriedades[propGrupo[2]].dono === jogador.id) {
+                    document.getElementById("btn_construir_" + propGrupo[0]).style.display = "block";
+                    document.getElementById("btn_construir_" + propGrupo[1]).style.display = "block";
+                    document.getElementById("btn_construir_" + propGrupo[2]).style.display = "block";
+            }
+        }
+    }
+}
+
+// Função para construir casas
+
+function construirCasa(idCasa) {
+    const jogador = jogadores[jogadorAtual];
+    if (propriedades[idCasa].casasConstruidas < 5) {
+        if (jogador.geo >= propriedades[idCasa].precoConstrucao) {
+            jogador.geo -= propriedades[idCasa].precoConstrucao;
+            propriedades[idCasa].casasConstruidas++;
+            adicionarPropriedade();
+            atualizarGeo();
+            if (idiomaAtual === "pt") {
+                fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> construiu uma casa em ${textosP[idiomaAtual]["casa_"+idCasa]} por ${propriedades[idCasa].precoConstrucao} Geo`);
+            } else {
+                exibirMensagem(`<span style="color: ${jogador.cor};">${jogador.nome}</span> built a house in ${textosP[idiomaAtual]["casa_"+idCasa]} for ${propriedades[idCasa].precoConstrucao} Geo`);
+            }
+        } else {
+            if (idiomaAtual === "pt") {
+                exibirMensagem("Você não possui Geo o suficiente!");
+            } else {
+                exibirMensagem("You don't have enough Geo!");
+            }
+        }
+    } else {
+        if (idiomaAtual === "pt") {
+            exibirMensagem("Você já possui um hotel nessa propriedade!");
+        } else {
+            exibirMensagem("You already have a hotel in this property!");
+        }
+    }
 }
 
 // Função para executar a ação da casa
@@ -2306,14 +2362,14 @@ function lancarDadosPrisao() {
                 jogador.selado = false;
                 tentativas[jogador.id] = 0;
                 if (idiomaAtual === "pt") {
-                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> tirou uma dupla e saiu da prisão!`);
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> tirou uma dupla e saiu do Templo!`);
                 } else {
                     fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> got a double on the dice and left the Temple!`);
                 }
             } else {
                 tentativas[jogador.id]++;
                 if (idiomaAtual === "pt") {
-                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> não conseguiu tirar uma dupla e continua no templo`);
+                    fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> não conseguiu tirar uma dupla e continua no Templo`);
                 } else {
                     fazerRegistro(`<span style="color: ${jogador.cor};">${jogador.nome}</span> didn't get a double and stays in the Temple`);
                 }

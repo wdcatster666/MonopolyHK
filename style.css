@@ -843,6 +843,7 @@ hr {
     background-color: #090a0e;
     border: solid 3px #0a0f1f;
     border-radius: 12px;
+    gap: 8px;
 }
 
 .info-propriedade {
@@ -893,6 +894,12 @@ hr {
 }
 
 .valor-aluguel-atual {
+    font-size: 14px;
+}
+
+.card-propriedade .botao-primario {
+    margin: 0 auto;
+    width: 90%;
     font-size: 14px;
 }
 
